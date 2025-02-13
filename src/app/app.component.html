@@ -1,2 +1,21 @@
 <app-home></app-home>
-<router-outlet />
+
+<mat-tab-group>
+    <mat-tab label="Desayuno">
+        <app-desayuno></app-desayuno>
+    </mat-tab>
+    <mat-tab label="Almuerzo">
+        <app-almuerzo></app-almuerzo>
+    </mat-tab>
+    <mat-tab label="Merienda">
+        <app-merienda></app-merienda>
+    </mat-tab>
+    <mat-tab label="Cena">
+        <app-cena></app-cena>
+    </mat-tab>
+    <mat-tab label="Colación">
+        <app-colacion></app-colacion>
+    </mat-tab>
+</mat-tab-group>
+
+<router-outlet></router-outlet>
