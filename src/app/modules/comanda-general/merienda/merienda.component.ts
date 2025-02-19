@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { TablaDesayuno } from "../../../models/tabla-desayuno.model";
 
 @Component({
   selector: "app-merienda",
@@ -7,69 +8,65 @@ import { Component } from "@angular/core";
 })
 export class MeriendaComponent {
   displayedColumns: string[] = [
+    "selected",
     "ubicacion",
     "diagnostico",
-    "nombre",
-    "apellido",
+    "nombreYApellido",
     "alergias",
     "dietaIndicada",
     "dietaAdecuada",
-    "definir",
+    "liquidos",
+    "panificados",
+    "reposteria",
+    "untables",
+    "liquidosFrios",
+    "extras",
+    "otrosExtras",
     "gustosSi",
     "gustosNo",
     "anamnesis",
-    "editar",
-    "validar",
+    "acciones",
   ];
-  dataSource = ELEMENT_DATA;
+  dataSource = DATA;
 
-  dietas = [
-    "Baja en azúcar",
-    "Baja en sal",
-    "Alta en fibra",
-    "Baja en carbohidratos",
-  ];
-  definiciones = ["Definir 1", "Definir 2", "Definir 3"];
-  definir: any;
+  dietas = [];
+  definiciones = [];
+  liquidos = [];
+  panificados = [];
+  reposteria = [];
+  untables = [];
+  extras = [];
+  otrosExtras = [];
+  liquidosFrios = [];
+  definir = "";
 
-  liquidos = ["Agua", "Jugo", "Leche"];
-  panificados = ["Pan integral", "Pan blanco"];
-  reposteria = ["Galletas", "Pastel"];
-  untables = ["Mantequilla", "Mermelada"];
-  extras = ["Frutas", "Yogur"];
-  otrosEspeciales = ["Sin gluten", "Vegano"];
+  constructor() {}
 
-  toggleValidado(element: ComandaData) {
+  toggleValidado(element: TablaDesayuno) {
     element.validado = !element.validado;
   }
-}
-export interface ComandaData {
-  ubicacion: string;
-  diagnostico: string;
-  nombre: string;
-  apellido: string;
-  alergias: string;
-  dietaIndicada: string;
-  dietaAdecuada: string;
-  definir: string;
-  gustosSi: string;
-  gustosNo: string;
-  anamnesis: string;
-  validado: boolean;
-  liquidos: string;
-  panificados: string;
-  reposteria: string;
-  untables: string;
-  extras: string;
-  otrosEspeciales: string;
+
+  toggleSelectAll(checked: boolean) {
+  this.dataSource.forEach(element => element.selected = checked);
 }
 
-const ELEMENT_DATA: ComandaData[] = [
+isAllSelected() {
+  return this.dataSource.every(element => element.selected);
+}
+
+isIndeterminate() {
+  const selectedCount = this.dataSource.filter(element => element.selected).length;
+  return console.log( selectedCount > 0 && selectedCount < this.dataSource.length);
+}
+
+}
+
+const DATA: TablaDesayuno[] = [
   {
+    selected: false,
     ubicacion: "Sala 1",
     diagnostico: "Diabetes",
-    nombre: "Juan",
-    apellido: "Perez",
+    nombreYApellido: "Juan Pérez",
     alergias: "Ninguna",
     dietaIndicada: "Baja en azúcar",
     dietaAdecuada: "Baja en carbohidratos",
@@ -82,7 +79,8 @@ const ELEMENT_DATA: ComandaData[] = [
     panificados: "Pan integral",
     reposteria: "Galletas",
     untables: "Mantequilla",
+    liquidosFrios: "Leche",
     extras: "Frutas",
-    otrosEspeciales: "Sin gluten",
+    otrosExtras: "Sin gluten",
   },
 ];

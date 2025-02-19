@@ -1,8 +1,8 @@
 export interface TablaDesayuno {
+    selected: boolean;
     ubicacion: string;
     diagnostico: string;
-    nombre: string;
-    apellido: string;
+    nombreYApellido: string;
     alergias: string;
     dietaIndicada: string;
     dietaAdecuada: string;
@@ -15,7 +15,8 @@ export interface TablaDesayuno {
     panificados: string;
     reposteria: string;
     untables: string;
+    liquidosFrios: string;
     extras: string;
-    otrosEspeciales: string;
+    otrosExtras: string;
   }
   

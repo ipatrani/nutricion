@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { TablaDesayuno } from "../../../models/tabla-desayuno";
+import { TablaDesayuno } from "../../../models/tabla-desayuno.model";
 
 @Component({
   selector: "app-desayuno",
@@ -8,51 +8,65 @@ import { TablaDesayuno } from "../../../models/tabla-desayuno";
 })
 export class DesayunoComponent {
   displayedColumns: string[] = [
+    "selected",
     "ubicacion",
     "diagnostico",
-    "nombre",
-    "apellido",
+    "nombreYApellido",
     "alergias",
     "dietaIndicada",
     "dietaAdecuada",
-    "definir",
+    "liquidos",
+    "panificados",
+    "reposteria",
+    "untables",
+    "liquidosFrios",
+    "extras",
+    "otrosExtras",
     "gustosSi",
     "gustosNo",
     "anamnesis",
-    "editar",
-    "validar",
+    "acciones",
   ];
-  dataSource = ELEMENT_DATA;
+  dataSource = DATA;
 
-  dietas = [
-    "Baja en azúcar",
-    "Baja en sal",
-    "Alta en fibra",
-    "Baja en carbohidratos",
-  ];
-  definiciones = ["Definir 1", "Definir 2", "Definir 3"];
-  liquidos = ["Agua", "Jugo", "Leche"];
-  panificados = ["Pan integral", "Pan blanco"];
-  reposteria = ["Galletas", "Pastel"];
-  untables = ["Mantequilla", "Mermelada"];
-  extras = ["Frutas", "Yogur"];
-  otrosEspeciales = ["Sin gluten", "Vegano"];
-  definir: any;
-  alimentos: any;
+  dietas = [];
+  definiciones = [];
+  liquidos = [];
+  panificados = [];
+  reposteria = [];
+  untables = [];
+  extras = [];
+  otrosExtras = [];
+  liquidosFrios = [];
+  definir = "";
 
   constructor() {}
 
   toggleValidado(element: TablaDesayuno) {
     element.validado = !element.validado;
   }
+
+  toggleSelectAll(checked: boolean) {
+  this.dataSource.forEach(element => element.selected = checked);
 }
 
-const ELEMENT_DATA: TablaDesayuno[] = [
+isAllSelected() {
+  return this.dataSource.every(element => element.selected);
+}
+
+isIndeterminate() {
+  const selectedCount = this.dataSource.filter(element => element.selected).length;
+  return console.log( selectedCount > 0 && selectedCount < this.dataSource.length);
+}
+
+}
+
+const DATA: TablaDesayuno[] = [
   {
+    selected: false,
     ubicacion: "Sala 1",
     diagnostico: "Diabetes",
-    nombre: "Juan",
-    apellido: "Perez",
+    nombreYApellido: "Juan Pérez",
     alergias: "Ninguna",
     dietaIndicada: "Baja en azúcar",
     dietaAdecuada: "Baja en carbohidratos",
@@ -65,7 +79,8 @@ const ELEMENT_DATA: TablaDesayuno[] = [
     panificados: "Pan integral",
     reposteria: "Galletas",
     untables: "Mantequilla",
+    liquidosFrios: "Leche",
     extras: "Frutas",
-    otrosEspeciales: "Sin gluten",
+    otrosExtras: "Sin gluten",
   },
 ];

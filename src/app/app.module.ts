@@ -26,8 +26,10 @@ import { AlmuerzoComponent } from './modules/comanda-general/almuerzo/almuerzo.c
 import { CenaComponent } from './modules/comanda-general/cena/cena.component';
 import { MeriendaComponent } from './modules/comanda-general/merienda/merienda.component';
 import { DesayunoComponent } from './modules/comanda-general/desayuno/desayuno.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from "./home/home.component";
+import { AcompananteComponent } from "./modules/comanda-general/acompanante/acompanante.component";
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 const routes: Routes = [
 ];
@@ -39,9 +41,11 @@ const routes: Routes = [
     AlmuerzoComponent,
     CenaComponent,
     MeriendaComponent,
-    DesayunoComponent
+    DesayunoComponent,
+    AcompananteComponent
   ],
   imports: [
+    RouterModule.forRoot(routes),
     BrowserModule,
     MatTableModule,
     FormsModule,
@@ -63,10 +67,16 @@ const routes: Routes = [
     BrowserAnimationsModule,
     MatTabsModule,
     HttpClientModule,
-    RouterModule.forRoot(routes),
-    HomeComponent
+    HomeComponent,
+    
 ],
-  providers: [],
+providers: [
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true // Permite múltiples interceptores si es necesario
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

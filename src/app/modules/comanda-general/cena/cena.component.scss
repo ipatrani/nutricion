@@ -5,7 +5,12 @@
   .text-red {
     color: red;
   }
-  .validado {
-    color: green;
+
+  .mat-icon {
+    color: #3c83ed;
   }
   
+  .mat-mdc-icon-button.mat-mdc-button-base {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+  }

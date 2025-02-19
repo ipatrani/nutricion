@@ -1,12 +1,12 @@
-import { Component } from "@angular/core";
-import { TablaAlmuerzo } from "../../../models/tabla-almuerzo.model";
+import { Component } from '@angular/core';
+import { TablaAlmuerzo } from '../../../models/tabla-almuerzo.model';
 
 @Component({
-  selector: "app-almuerzo",
-  templateUrl: "./almuerzo.component.html",
-  styleUrls: ["./almuerzo.component.scss"],
+  selector: 'app-acompanante',
+  templateUrl: './acompanante.component.html',
+  styleUrl: './acompanante.component.scss'
 })
-export class AlmuerzoComponent {
+export class AcompananteComponent {
   displayedColumns: string[] = [
     "selected",
     "ubicacion",

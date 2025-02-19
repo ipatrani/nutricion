@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { TablaAlmuerzo } from "../../../models/tabla-almuerzo.model";
 
 @Component({
   selector: "app-cena",
@@ -7,10 +8,10 @@ import { Component } from "@angular/core";
 })
 export class CenaComponent {
   displayedColumns: string[] = [
+    "selected",
     "ubicacion",
     "diagnostico",
-    "nombre",
-    "apellido",
+    "nombreYApellido",
     "alergias",
     "dietaIndicada",
     "dietaAdecuada",
@@ -20,12 +21,12 @@ export class CenaComponent {
     "postre",
     "bebida",
     "panificados",
-    "otroEspeciales",
+    "condimentos",
+    "otrosExtras",
     "gustosSi",
     "gustosNo",
     "anamnesis",
-    "editar",
-    "validar",
+    "acciones",
   ];
 
   dietas: any;
@@ -37,52 +38,50 @@ export class CenaComponent {
   panificados: any;
   especiales: any;
 
-  dataSource = [
-    {
-      ubicacion: "Ubicación 1",
-      diagnostico: "Diagnóstico 1",
-      nombre: "Nombre 1",
-      apellido: "Apellido 1",
-      alergias: "Alergias 1",
-      dietaIndicada: "Dieta 1",
-      dietaAdecuada: "Dieta 1",
-      entrada: "Entrada 1",
-      platoPrincipal: "Plato 1",
-      guarnicion: "Guarnición 1",
-      postre: "Postre 1",
-      bebida: "Bebida 1",
-      panificados: "Panificado 1",
-      otroEspeciales: "Especial 1",
-      gustosSi: "Gustos Sí 1",
-      gustosNo: "Gustos No 1",
-      anamnesis: "Anamnesis 1",
-      validado: false,
-    },
-  ];
+  dataSource = DATA;
+condimentos: any;
 
-  columnDefinitions = [
-    { field: "ubicacion", header: "Ubicación" },
-    { field: "diagnostico", header: "Diagnóstico" },
-    { field: "nombre", header: "Nombre" },
-    { field: "apellido", header: "Apellido" },
-    { field: "alergias", header: "Alergias" },
-    { field: "dietaIndicada", header: "Dieta Indicada" },
-    { field: "dietaAdecuada", header: "Dieta Adecuada" },
-    { field: "entrada", header: "Entrada" },
-    { field: "platoPrincipal", header: "Plato Principal" },
-    { field: "guarnicion", header: "Guarnición" },
-    { field: "postre", header: "Postre" },
-    { field: "bebida", header: "Bebida" },
-    { field: "panificados", header: "Panificados" },
-    { field: "otroEspeciales", header: "Otro/Especiales" },
-    { field: "gustosSi", header: "Gustos Sí" },
-    { field: "gustosNo", header: "Gustos No" },
-    { field: "anamnesis", header: "Anamnesis" },
-    { field: "editar", header: "Editar" },
-    { field: "validar", header: "Validar" },
-  ];
+  toggleValidado(element: TablaAlmuerzo) {
+    element.validado = !element.validado;
+  }
+  toggleSelectAll(checked: boolean) {
+    this.dataSource.forEach((element) => (element.selected = checked));
+  }
 
-  toggleValidado(element: any) {
-    element["validado"] = !element["validado"];
+  isAllSelected() {
+    return this.dataSource.every((element) => element.selected);
+  }
+
+  isIndeterminate() {
+    const selectedCount = this.dataSource.filter(
+      (element) => element.selected
+    ).length;
+    return console.log(
+      selectedCount > 0 && selectedCount < this.dataSource.length
+    );
   }
 }
+
+const DATA: TablaAlmuerzo[] = [
+  {
+    selected: false,
+    ubicacion: "Sala 1",
+    diagnostico: "Diabetes",
+    nombreYApellido: "Juan Algo",
+    alergias: "Ninguna",
+    dietaIndicada: "Baja en azúcar",
+    dietaAdecuada: "Baja en carbohidratos",
+    entrada: "",
+    platoPrincipal: "",
+    guarnicion: "",
+    postre: "",
+    bebida: "",
+    panificados: "",
+    condimentos: "",
+    otrosExtras: "",
+    gustosSi: "Frutas",
+    gustosNo: "Azúcar",
+    anamnesis: "Paciente con diabetes tipo 2",
+    validado: false,
+  },
+];

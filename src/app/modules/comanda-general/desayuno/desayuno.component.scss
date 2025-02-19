@@ -5,6 +5,19 @@
 .text-red {
   color: red;
 }
-.validado {
-  color: green;
+
+.mat-icon {
+  color: #3c83ed;
+}
+
+.mat-mdc-icon-button.mat-mdc-button-base {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+.mat-mdc-row:nth-child(even) {
+  background-color: #f1f1f1;
+}
+
+.mat-mdc-row:nth-child(odd) {
+  background-color: white;
 }
