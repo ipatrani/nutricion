@@ -104,12 +104,12 @@
     </td>
   </ng-container>
 
-  <ng-container matColumnDef="extras">
-    <th mat-header-cell *matHeaderCellDef> Extras </th>
+  <ng-container matColumnDef="basicos">
+    <th mat-header-cell *matHeaderCellDef> Basicos </th>
     <td mat-cell *matCellDef="let element">
       <mat-form-field appearance="outline">
-        <mat-select [(ngModel)]="element.extras" placeholder="Seleccionar...">
-          <mat-option *ngFor="let extra of extras" [value]="extra">{{extra}}</mat-option>
+        <mat-select [(ngModel)]="element.basicos" placeholder="Seleccionar...">
+          <mat-option *ngFor="let basico of basicos" [value]="basico">{{basico}}</mat-option>
         </mat-select>
       </mat-form-field>
     </td>

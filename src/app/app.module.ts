@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ColacionComponent } from './modules/comanda-general/colacion/colacion.component';
 import { MatTableModule } from '@angular/material/table';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -30,6 +30,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from "./home/home.component";
 import { AcompananteComponent } from "./modules/comanda-general/acompanante/acompanante.component";
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { GenericTableComponent } from './modules/comanda-general/generic-table/generic-table.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 const routes: Routes = [
 ];
@@ -42,7 +44,8 @@ const routes: Routes = [
     CenaComponent,
     MeriendaComponent,
     DesayunoComponent,
-    AcompananteComponent
+    AcompananteComponent,
+    GenericTableComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -68,6 +71,8 @@ const routes: Routes = [
     MatTabsModule,
     HttpClientModule,
     HomeComponent,
+    ReactiveFormsModule,
+    NgxMatSelectSearchModule
     
 ],
 providers: [

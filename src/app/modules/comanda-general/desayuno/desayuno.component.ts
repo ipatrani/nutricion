@@ -1,6 +1,11 @@
 import { Component } from "@angular/core";
 import { TablaDesayuno } from "../../../models/tabla-desayuno.model";
-
+import { FormControl } from "@angular/forms";
+import { map, Observable, startWith } from "rxjs";
+interface Dieta {
+  id: string;
+  nombre: string;
+}
 @Component({
   selector: "app-desayuno",
   templateUrl: "./desayuno.component.html",
@@ -20,7 +25,7 @@ export class DesayunoComponent {
     "reposteria",
     "untables",
     "liquidosFrios",
-    "extras",
+    "basicos",
     "otrosExtras",
     "gustosSi",
     "gustosNo",
@@ -29,36 +34,61 @@ export class DesayunoComponent {
   ];
   dataSource = DATA;
 
-  dietas = [];
+  dietas: Dieta[] = [
+    { id: "1", nombre: "Dieta baja en calorías" },
+    { id: "2", nombre: "Dieta para diabéticos" },
+    { id: "3", nombre: "Dieta vegetariana" },
+  ];
+  dietaFilterCtrl = new FormControl("");
+  filteredDietas!: Observable<any[]>;
+
   definiciones = [];
   liquidos = [];
   panificados = [];
   reposteria = [];
   untables = [];
-  extras = [];
+  basicos = [];
   otrosExtras = [];
   liquidosFrios = [];
   definir = "";
 
   constructor() {}
 
+  ngOnInit() {
+    this.filteredDietas = this.dietaFilterCtrl.valueChanges.pipe(
+      startWith(""),
+      map((value) => this._filterDietas(value ?? ""))
+    );
+  }
+
+  private _filterDietas(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.dietas.filter((dieta) =>
+      dieta.nombre.toLowerCase().includes(filterValue)
+    );
+  }
+
+  onDietaAdecuadaChange(element: any, value: any) {
+    console.log(`Dieta seleccionada para ${JSON.stringify(element)}: ${value}`);
+  }
   toggleValidado(element: TablaDesayuno) {
     element.validado = !element.validado;
   }
 
   toggleSelectAll(checked: boolean) {
-  this.dataSource.forEach(element => element.selected = checked);
-}
+    this.dataSource.forEach((element) => (element.selected = checked));
+  }
 
-isAllSelected() {
-  return this.dataSource.every(element => element.selected);
-}
+  isAllSelected() {
+    return this.dataSource.every((element) => element.selected);
+  }
 
-isIndeterminate() {
-  const selectedCount = this.dataSource.filter(element => element.selected).length;
-  return console.log( selectedCount > 0 && selectedCount < this.dataSource.length);
-}
-
+  isIndeterminate() {
+    const selectedCount = this.dataSource.filter(
+      (element) => element.selected
+    ).length;
+    return selectedCount > 0 && selectedCount < this.dataSource.length;
+  }
 }
 
 const DATA: TablaDesayuno[] = [
@@ -80,7 +110,7 @@ const DATA: TablaDesayuno[] = [
     reposteria: "Galletas",
     untables: "Mantequilla",
     liquidosFrios: "Leche",
-    extras: "Frutas",
+    basicos: "Frutas",
     otrosExtras: "Sin gluten",
   },
 ];

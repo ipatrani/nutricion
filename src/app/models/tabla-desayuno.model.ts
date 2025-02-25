@@ -16,7 +16,7 @@ export interface TablaDesayuno {
     reposteria: string;
     untables: string;
     liquidosFrios: string;
-    extras: string;
+    basicos: string;
     otrosExtras: string;
   }
   

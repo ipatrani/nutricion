@@ -56,9 +56,7 @@ condimentos: any;
     const selectedCount = this.dataSource.filter(
       (element) => element.selected
     ).length;
-    return console.log(
-      selectedCount > 0 && selectedCount < this.dataSource.length
-    );
+    return selectedCount > 0 && selectedCount < this.dataSource.length;
   }
 }
 

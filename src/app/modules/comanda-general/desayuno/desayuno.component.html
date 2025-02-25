@@ -42,12 +42,23 @@
     <th mat-header-cell *matHeaderCellDef> Dieta Adecuada </th>
     <td mat-cell *matCellDef="let element">
       <mat-form-field appearance="outline">
-        <mat-select [(ngModel)]="element.dietaAdecuada" placeholder="Seleccionar...">
-          <mat-option *ngFor="let dieta of dietas" [value]="dieta">{{dieta}}</mat-option>
+        <mat-select [(ngModel)]="element.dietaAdecuada" placeholder="Seleccionar..." (selectionChange)="onDietaAdecuadaChange(element, $event.value)">
+          
+          <!-- Componente de búsqueda fuera de mat-option -->
+          <ngx-mat-select-search
+            [formControl]="dietaFilterCtrl"
+            [placeholderLabel]="'Buscar...'"
+            [noEntriesFoundLabel]="'No se encontraron resultados'">
+          </ngx-mat-select-search>
+  
+          <mat-option *ngFor="let dieta of filteredDietas | async" [value]="dieta.id">
+            {{ dieta.nombre }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </td>
   </ng-container>
+  
 
   <ng-container matColumnDef="liquidos">
     <th mat-header-cell *matHeaderCellDef> Líquidos </th>
@@ -104,12 +115,12 @@
     </td>
   </ng-container>
 
-  <ng-container matColumnDef="extras">
-    <th mat-header-cell *matHeaderCellDef> Extras </th>
+  <ng-container matColumnDef="basicos">
+    <th mat-header-cell *matHeaderCellDef> Basicos </th>
     <td mat-cell *matCellDef="let element">
       <mat-form-field appearance="outline">
-        <mat-select [(ngModel)]="element.extras" placeholder="Seleccionar...">
-          <mat-option *ngFor="let extra of extras" [value]="extra">{{extra}}</mat-option>
+        <mat-select [(ngModel)]="element.basicos" placeholder="Seleccionar...">
+          <mat-option *ngFor="let basico of basicos" [value]="basico">{{basico}}</mat-option>
         </mat-select>
       </mat-form-field>
     </td>

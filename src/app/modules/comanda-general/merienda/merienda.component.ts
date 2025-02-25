@@ -20,7 +20,7 @@ export class MeriendaComponent {
     "reposteria",
     "untables",
     "liquidosFrios",
-    "extras",
+    "basicos",
     "otrosExtras",
     "gustosSi",
     "gustosNo",
@@ -35,7 +35,7 @@ export class MeriendaComponent {
   panificados = [];
   reposteria = [];
   untables = [];
-  extras = [];
+  basicos = [];
   otrosExtras = [];
   liquidosFrios = [];
   definir = "";
@@ -56,7 +56,7 @@ isAllSelected() {
 
 isIndeterminate() {
   const selectedCount = this.dataSource.filter(element => element.selected).length;
-  return console.log( selectedCount > 0 && selectedCount < this.dataSource.length);
+  return selectedCount > 0 && selectedCount < this.dataSource.length;
 }
 
 }
@@ -80,7 +80,7 @@ const DATA: TablaDesayuno[] = [
     reposteria: "Galletas",
     untables: "Mantequilla",
     liquidosFrios: "Leche",
-    extras: "Frutas",
+    basicos: "Frutas",
     otrosExtras: "Sin gluten",
   },
 ];
