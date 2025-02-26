@@ -22,6 +22,7 @@ export class CenaComponent {
     "bebida",
     "panificados",
     "condimentos",
+    "basicos",
     "otrosExtras",
     "gustosSi",
     "gustosNo",
@@ -37,9 +38,9 @@ export class CenaComponent {
   bebidas: any;
   panificados: any;
   especiales: any;
-
   dataSource = DATA;
-condimentos: any;
+  condimentos: any;
+  basicos: any;
 
   toggleValidado(element: TablaAlmuerzo) {
     element.validado = !element.validado;
@@ -65,7 +66,7 @@ const DATA: TablaAlmuerzo[] = [
     selected: false,
     ubicacion: "Sala 1",
     diagnostico: "Diabetes",
-    nombreYApellido: "Juan Algo",
+    nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
     alergias: "Ninguna",
     dietaIndicada: "Baja en azúcar",
     dietaAdecuada: "Baja en carbohidratos",

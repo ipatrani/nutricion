@@ -22,6 +22,7 @@ export class AlmuerzoComponent {
     "bebida",
     "panificados",
     "condimentos",
+    "basicos",
     "otrosExtras",
     "gustosSi",
     "gustosNo",
@@ -37,9 +38,9 @@ export class AlmuerzoComponent {
   bebidas: any;
   panificados: any;
   especiales: any;
-
   dataSource = DATA;
-condimentos: any;
+  condimentos: any;
+  basicos: any;
 
   toggleValidado(element: TablaAlmuerzo) {
     element.validado = !element.validado;
@@ -56,7 +57,7 @@ condimentos: any;
     const selectedCount = this.dataSource.filter(
       (element) => element.selected
     ).length;
-    return selectedCount > 0 && selectedCount < this.dataSource.length
+    return selectedCount > 0 && selectedCount < this.dataSource.length;
   }
 }
 
@@ -65,7 +66,7 @@ const DATA: TablaAlmuerzo[] = [
     selected: false,
     ubicacion: "Sala 1",
     diagnostico: "Diabetes",
-    nombreYApellido: "Juan Algo",
+    nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
     alergias: "Ninguna",
     dietaIndicada: "Baja en azúcar",
     dietaAdecuada: "Baja en carbohidratos",

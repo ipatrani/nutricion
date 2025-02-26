@@ -21,7 +21,12 @@
   
     <ng-container matColumnDef="nombreYApellido">
       <th mat-header-cell *matHeaderCellDef> Nombre Apellido </th>
-      <td mat-cell *matCellDef="let element"> {{element.nombreYApellido}} </td>
+      <td mat-cell *matCellDef="let element">
+        <div>
+          <div>{{element.nombreYApellido.split(' HC: ')[0]}}</div>
+          <div>HC: {{element.nombreYApellido.split(' HC: ')[1].split(' DNI: ')[0]}} - DNI: {{element.nombreYApellido.split(' DNI: ')[1]}}</div>
+        </div>
+      </td>
     </ng-container>
     
     <ng-container matColumnDef="alergias">
@@ -32,9 +37,7 @@
     <ng-container matColumnDef="dietaIndicada">
       <th mat-header-cell *matHeaderCellDef> Dieta Indicada </th>
       <td mat-cell *matCellDef="let element">
-        <mat-form-field appearance="outline">
-          <input matInput placeholder="Dieta Indicada">
-        </mat-form-field>
+        {{element.dietaIndicada}}
       </td>
     </ng-container>
   
@@ -121,6 +124,17 @@
         <mat-form-field appearance="outline">
           <mat-select [(ngModel)]="element.condimentos" placeholder="Seleccionar...">
             <mat-option *ngFor="let condimento of condimentos" [value]="condimento">{{condimento}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="basicos">
+      <th mat-header-cell *matHeaderCellDef> Basicos </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field appearance="outline">
+          <mat-select [(ngModel)]="element.basicos" placeholder="Seleccionar...">
+            <mat-option *ngFor="let basico of basicos" [value]="basico">{{basico}}</mat-option>
           </mat-select>
         </mat-form-field>
       </td>

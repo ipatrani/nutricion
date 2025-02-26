@@ -10,35 +10,11 @@ export class ColacionComponent {
   displayedColumns: string[] = [
     "selected",
     "ubicacion",
-    "diagnostico",
     "nombreYApellido",
-    "alergias",
-    "dietaIndicada",
-    "dietaAdecuada",
-    "liquidos",
-    "panificados",
-    "reposteria",
-    "untables",
-    "liquidosFrios",
-    "basicos",
-    "otrosExtras",
-    "gustosSi",
-    "gustosNo",
-    "anamnesis",
-    "acciones",
+    "colacion",
   ];
   dataSource = DATA;
-
-  dietas = [];
-  definiciones = [];
-  liquidos = [];
-  panificados = [];
-  reposteria = [];
-  untables = [];
-  basicos = [];
-  otrosExtras = [];
-  liquidosFrios = [];
-  definir = "";
+  colaciones: any;
 
   constructor() {}
 
@@ -47,40 +23,25 @@ export class ColacionComponent {
   }
 
   toggleSelectAll(checked: boolean) {
-  this.dataSource.forEach(element => element.selected = checked);
+    this.dataSource.forEach((element) => (element.selected = checked));
+  }
+
+  isAllSelected() {
+    return this.dataSource.every((element) => element.selected);
+  }
+
+  isIndeterminate() {
+    const selectedCount = this.dataSource.filter(
+      (element) => element.selected
+    ).length;
+    return selectedCount > 0 && selectedCount < this.dataSource.length;
+  }
 }
 
-isAllSelected() {
-  return this.dataSource.every(element => element.selected);
-}
-
-isIndeterminate() {
-  const selectedCount = this.dataSource.filter(element => element.selected).length;
-  return selectedCount > 0 && selectedCount < this.dataSource.length;
-}
-
-}
-
-const DATA: TablaDesayuno[] = [
+const DATA = [
   {
     selected: false,
     ubicacion: "Sala 1",
-    diagnostico: "Diabetes",
-    nombreYApellido: "Juan Pérez",
-    alergias: "Ninguna",
-    dietaIndicada: "Baja en azúcar",
-    dietaAdecuada: "Baja en carbohidratos",
-    definir: "Definir 1",
-    gustosSi: "Frutas",
-    gustosNo: "Azúcar",
-    anamnesis: "Paciente con diabetes tipo 2",
-    validado: false,
-    liquidos: "Agua",
-    panificados: "Pan integral",
-    reposteria: "Galletas",
-    untables: "Mantequilla",
-    liquidosFrios: "Leche",
-    basicos: "Frutas",
-    otrosExtras: "Sin gluten",
+    nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
   },
 ];

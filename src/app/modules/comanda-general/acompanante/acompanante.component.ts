@@ -65,7 +65,7 @@ const DATA: TablaAlmuerzo[] = [
     selected: false,
     ubicacion: "Sala 1",
     diagnostico: "Diabetes",
-    nombreYApellido: "Juan Algo",
+    nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
     alergias: "Ninguna",
     dietaIndicada: "Baja en azúcar",
     dietaAdecuada: "Baja en carbohidratos",
