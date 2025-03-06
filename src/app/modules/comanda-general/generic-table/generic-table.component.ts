@@ -12,22 +12,22 @@ interface TableRow {
   templateUrl: './generic-table.component.html',
   styleUrls: ['./generic-table.component.scss']
 })
-export class GenericTableComponent<T> implements OnInit {
+export class GenericTableComponent<T extends TableRow> implements OnInit {
   @Input() tableName: string = '';
   @Input() displayedColumns: string[] = [];
   @Input() dataSource: T[] = [];
   @Input() selectable: boolean = false;
+  @Input() selectColumns: string[] = [];
+  @Input() selectOptions: { [key: string]: string[] } = {};
 
-  tableDataSource!: MatTableDataSource<TableRow>;
-  selection = new SelectionModel<TableRow>(true, []);
+  tableDataSource!: MatTableDataSource<T>;
+  selection = new SelectionModel<T>(true, []);
 
   ngOnInit() {
-    this.tableDataSource = new MatTableDataSource<TableRow>(
-      this.dataSource.map(item => ({ ...item, selected: false, validado: false }))
-    );
+    this.tableDataSource = new MatTableDataSource<T>(this.dataSource);
   }
 
-  toggleValidado(element: TableRow) {
+  toggleValidado(element: T) {
     element.validado = !element.validado;
   }
 

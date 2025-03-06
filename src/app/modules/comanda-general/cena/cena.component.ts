@@ -23,6 +23,7 @@ export class CenaComponent {
     "panificados",
     "condimentos",
     "basicos",
+    "extras",
     "otrosExtras",
     "gustosSi",
     "gustosNo",
@@ -41,6 +42,7 @@ export class CenaComponent {
   dataSource = DATA;
   condimentos: any;
   basicos: any;
+  extrasList = ["algo1", "algo2", "algo3", "otros"];
 
   toggleValidado(element: TablaAlmuerzo) {
     element.validado = !element.validado;

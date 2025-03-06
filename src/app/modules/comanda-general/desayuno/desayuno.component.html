@@ -128,6 +128,17 @@
       </mat-form-field>
     </td>
   </ng-container>
+  
+  <ng-container matColumnDef="extras">
+    <th mat-header-cell *matHeaderCellDef> Extras </th>
+    <td mat-cell *matCellDef="let element">
+      <mat-form-field appearance="outline">
+        <mat-select [(ngModel)]="element.extras" multiple placeholder="Seleccionar...">
+          <mat-option *ngFor="let extra of extrasList" [value]="extra">{{extra}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </td>
+  </ng-container>
 
   <ng-container matColumnDef="otrosExtras">
     <th mat-header-cell *matHeaderCellDef> Otros/Extras </th>

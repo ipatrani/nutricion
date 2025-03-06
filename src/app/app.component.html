@@ -1,24 +1,34 @@
-
-<!--<h4>Plantilla de distribución</h4>-->
+<h1>Plantilla de distribución</h1>
 <mat-tab-group>
-    <mat-tab label="Desayuno">
-        <app-desayuno></app-desayuno>
-    </mat-tab>
-    <mat-tab label="Almuerzo">
-        <app-almuerzo></app-almuerzo>
-    </mat-tab>
-    <mat-tab label="Merienda">
-        <app-merienda></app-merienda>
-    </mat-tab>
-    <mat-tab label="Cena">
-        <app-cena></app-cena>
-    </mat-tab>
-    <mat-tab label="Colación">
-        <app-colacion></app-colacion>
-    </mat-tab>
-    <mat-tab label="D.Acompañante">
-        <app-acompanante></app-acompanante>
-    </mat-tab>
+  <mat-tab label="Desayuno">
+    <app-desayuno></app-desayuno>
+  </mat-tab>
+  <mat-tab label="Almuerzo">
+    <app-almuerzo></app-almuerzo>
+  </mat-tab>
+  <mat-tab label="Merienda">
+    <app-merienda></app-merienda>
+  </mat-tab>
+  <mat-tab label="Cena">
+    <app-cena></app-cena>
+  </mat-tab>
+  <mat-tab label="Colación">
+    <app-colacion></app-colacion>
+  </mat-tab>
+  <mat-tab label="D.Acompañante">
+    <app-acompanante></app-acompanante>
+  </mat-tab>
+  <!-- <mat-tab label="GENERIC">
+    <app-generic-table
+      tableName="Desayuno"
+      [dataSource]="desayunoData"
+      [displayedColumns]="displayedColumns"
+      [selectable]="true"
+      [selectColumns]="selectColumns"
+      [selectOptions]="selectOptions"
+    >
+    </app-generic-table>
+  </mat-tab> -->
 </mat-tab-group>
 
 <router-outlet></router-outlet>
