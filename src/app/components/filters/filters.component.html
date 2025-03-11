@@ -1,0 +1,22 @@
+<div class="filters-container">
+  <mat-form-field appearance="outline">
+    <mat-select [(ngModel)]="selectedSector" placeholder="Sector" (selectionChange)="applyFilter()">
+      <mat-option [value]="">Todos</mat-option>
+      <mat-option *ngFor="let sector of sectors" [value]="sector">{{ sector }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-select [(ngModel)]="selectedDay" placeholder="Día" (selectionChange)="applyFilter()">
+      <mat-option [value]="">Todos</mat-option>
+      <mat-option *ngFor="let day of days" [value]="day">{{ day }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" placeholder="Buscar...">
+    <input placeholder="Buscador" matInput [(ngModel)]="searchTerm" (keyup)="applyFilter()" />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-slide-toggle labelPosition="before">Pac. SIN entrevista inicial</mat-slide-toggle>
+</div>

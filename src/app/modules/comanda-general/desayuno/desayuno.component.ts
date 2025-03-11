@@ -41,7 +41,7 @@ export class DesayunoComponent {
       nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
       alergias: "Ninguna",
       dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: "Baja en carbohidratos",
+      dietaAdecuada: [],
       definir: "Definir 1",
       gustosSi: "Frutas",
       gustosNo: "Azúcar",
@@ -53,17 +53,17 @@ export class DesayunoComponent {
       untables: "Mantequilla",
       liquidosFrios: "Leche",
       basicos: "Frutas",
-      extras: "Extra",
+      extras: [],
       otrosExtras: "Sin gluten",
     },
     {
       selected: false,
       ubicacion: "Sala 1",
       diagnostico: "Diabetes",
-      nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
+      nombreYApellido: "Diego Pérez HC: 123 DNI: 12345678",
       alergias: "Ninguna",
       dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: "Baja en carbohidratos",
+      dietaAdecuada: [],
       definir: "Definir 1",
       gustosSi: "Frutas",
       gustosNo: "Azúcar",
@@ -75,17 +75,17 @@ export class DesayunoComponent {
       untables: "Mantequilla",
       liquidosFrios: "Leche",
       basicos: "Frutas",
-      extras: "Extra",
+      extras: [],
       otrosExtras: "Sin gluten",
     },
     {
       selected: false,
-      ubicacion: "Sala 1",
+      ubicacion: "Sala 2",
       diagnostico: "Diabetes",
       nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
       alergias: "Ninguna",
       dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: "Baja en carbohidratos",
+      dietaAdecuada: [],
       definir: "Definir 1",
       gustosSi: "Frutas",
       gustosNo: "Azúcar",
@@ -97,17 +97,17 @@ export class DesayunoComponent {
       untables: "Mantequilla",
       liquidosFrios: "Leche",
       basicos: "Frutas",
-      extras: "Extra",
+      extras: [],
       otrosExtras: "Sin gluten",
     },
     {
       selected: false,
-      ubicacion: "Sala 1",
+      ubicacion: "Sala 3",
       diagnostico: "Diabetes",
       nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
       alergias: "Ninguna",
       dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: "Baja en carbohidratos",
+      dietaAdecuada: [],
       definir: "Definir 1",
       gustosSi: "Frutas",
       gustosNo: "Azúcar",
@@ -119,164 +119,9 @@ export class DesayunoComponent {
       untables: "Mantequilla",
       liquidosFrios: "Leche",
       basicos: "Frutas",
-      extras: "Extra",
+      extras: [],
       otrosExtras: "Sin gluten",
     },
-    {
-      selected: false,
-      ubicacion: "Sala 1",
-      diagnostico: "Diabetes",
-      nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
-      alergias: "Ninguna",
-      dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: "Baja en carbohidratos",
-      definir: "Definir 1",
-      gustosSi: "Frutas",
-      gustosNo: "Azúcar",
-      anamnesis: "Paciente con diabetes tipo 2",
-      validado: false,
-      liquidos: "Agua",
-      panificados: "Pan integral",
-      reposteria: "Galletas",
-      untables: "Mantequilla",
-      liquidosFrios: "Leche",
-      basicos: "Frutas",
-      extras: "Extra",
-      otrosExtras: "Sin gluten",
-    },
-    {
-      selected: false,
-      ubicacion: "Sala 1",
-      diagnostico: "Diabetes",
-      nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
-      alergias: "Ninguna",
-      dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: "Baja en carbohidratos",
-      definir: "Definir 1",
-      gustosSi: "Frutas",
-      gustosNo: "Azúcar",
-      anamnesis: "Paciente con diabetes tipo 2",
-      validado: false,
-      liquidos: "Agua",
-      panificados: "Pan integral",
-      reposteria: "Galletas",
-      untables: "Mantequilla",
-      liquidosFrios: "Leche",
-      basicos: "Frutas",
-      extras: "Extra",
-      otrosExtras: "Sin gluten",
-    },
-    {
-      selected: false,
-      ubicacion: "Sala 1",
-      diagnostico: "Diabetes",
-      nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
-      alergias: "Ninguna",
-      dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: "Baja en carbohidratos",
-      definir: "Definir 1",
-      gustosSi: "Frutas",
-      gustosNo: "Azúcar",
-      anamnesis: "Paciente con diabetes tipo 2",
-      validado: false,
-      liquidos: "Agua",
-      panificados: "Pan integral",
-      reposteria: "Galletas",
-      untables: "Mantequilla",
-      liquidosFrios: "Leche",
-      basicos: "Frutas",
-      extras: "Extra",
-      otrosExtras: "Sin gluten",
-    },
-    {
-      selected: false,
-      ubicacion: "Sala 1",
-      diagnostico: "Diabetes",
-      nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
-      alergias: "Ninguna",
-      dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: "Baja en carbohidratos",
-      definir: "Definir 1",
-      gustosSi: "Frutas",
-      gustosNo: "Azúcar",
-      anamnesis: "Paciente con diabetes tipo 2",
-      validado: false,
-      liquidos: "Agua",
-      panificados: "Pan integral",
-      reposteria: "Galletas",
-      untables: "Mantequilla",
-      liquidosFrios: "Leche",
-      basicos: "Frutas",
-      extras: "Extra",
-      otrosExtras: "Sin gluten",
-    },
-    {
-      selected: false,
-      ubicacion: "Sala 1",
-      diagnostico: "Diabetes",
-      nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
-      alergias: "Ninguna",
-      dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: "Baja en carbohidratos",
-      definir: "Definir 1",
-      gustosSi: "Frutas",
-      gustosNo: "Azúcar",
-      anamnesis: "Paciente con diabetes tipo 2",
-      validado: false,
-      liquidos: "Agua",
-      panificados: "Pan integral",
-      reposteria: "Galletas",
-      untables: "Mantequilla",
-      liquidosFrios: "Leche",
-      basicos: "Frutas",
-      extras: "Extra",
-      otrosExtras: "Sin gluten",
-    },
-    {
-      selected: false,
-      ubicacion: "Sala 1",
-      diagnostico: "Diabetes",
-      nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
-      alergias: "Ninguna",
-      dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: "Baja en carbohidratos",
-      definir: "Definir 1",
-      gustosSi: "Frutas",
-      gustosNo: "Azúcar",
-      anamnesis: "Paciente con diabetes tipo 2",
-      validado: false,
-      liquidos: "Agua",
-      panificados: "Pan integral",
-      reposteria: "Galletas",
-      untables: "Mantequilla",
-      liquidosFrios: "Leche",
-      basicos: "Frutas",
-      extras: "Extra",
-      otrosExtras: "Sin gluten",
-    },
-    {
-      selected: false,
-      ubicacion: "Sala 1",
-      diagnostico: "Diabetes",
-      nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
-      alergias: "Ninguna",
-      dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: "Baja en carbohidratos",
-      definir: "Definir 1",
-      gustosSi: "Frutas",
-      gustosNo: "Azúcar",
-      anamnesis: "Paciente con diabetes tipo 2",
-      validado: false,
-      liquidos: "Agua",
-      panificados: "Pan integral",
-      reposteria: "Galletas",
-      untables: "Mantequilla",
-      liquidosFrios: "Leche",
-      basicos: "Frutas",
-      extras: "Extra",
-      otrosExtras: "Sin gluten",
-    },
-    // ... otros elementos ...
   ]);
   dietas: Dieta[] = [
     { id: "1", nombre: "Dieta baja en calorías" },
@@ -295,11 +140,31 @@ export class DesayunoComponent {
   liquidosFrios = [];
   definir = "";
   extrasList = ["algo1", "algo2", "algo3", "otros"];
+  filteredData = this.dataSource.data;
 
   constructor() {}
 
   @ViewChild(MatPaginator)
-  paginator: MatPaginator = new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
+  paginator: MatPaginator = new MatPaginator(
+    new MatPaginatorIntl(),
+    ChangeDetectorRef.prototype
+  );
+
+  onFilterApplied(filter: any) {
+    console.log("Filtros recibidos:", filter);
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const parsedFilter = JSON.parse(filter);
+      return (
+        (!parsedFilter.sector || data.ubicacion.includes(parsedFilter.sector)) &&
+        (!parsedFilter.day || data.diagnostico.includes(parsedFilter.day)) &&
+        (!parsedFilter.searchTerm ||
+          data.nombreYApellido.toLowerCase().includes(parsedFilter.searchTerm.toLowerCase()))
+      );
+    };
+  
+    // Aplicamos el filtro a la tabla
+    this.dataSource.filter = JSON.stringify(filter);
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -310,6 +175,7 @@ export class DesayunoComponent {
       startWith(""),
       map((value) => this._filterDietas(value ?? ""))
     );
+    console.log("Datos iniciales en dataSource:", this.dataSource.data);
   }
 
   private _filterDietas(value: string): any[] {
@@ -319,8 +185,12 @@ export class DesayunoComponent {
     );
   }
 
-  onDietaAdecuadaChange(element: any, value: any) {
-    console.log(`Dieta seleccionada para ${JSON.stringify(element)}: ${value}`);
+  onDietaAdecuadaChange(element: any, value: any[]) {
+    element.dietaAdecuada = value;
+    console.log(
+      `Dieta adecuada actualizada para ${element.nombreYApellido}:`,
+      value
+    );
   }
 
   toggleValidado(element: TablaDesayuno) {

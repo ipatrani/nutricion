@@ -64,13 +64,12 @@ export class AcompananteComponent {
     },
   ]);
   condimentos: any;
-
   @ViewChild(MatPaginator)
   paginator: MatPaginator = new MatPaginator(
     new MatPaginatorIntl(),
     ChangeDetectorRef.prototype
   );
-
+  
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
