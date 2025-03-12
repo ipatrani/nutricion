@@ -7,10 +7,9 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-select [(ngModel)]="selectedDay" placeholder="Día" (selectionChange)="applyFilter()">
-      <mat-option [value]="">Todos</mat-option>
-      <mat-option *ngFor="let day of days" [value]="day">{{ day }}</mat-option>
-    </mat-select>
+    <input matInput [matDatepicker]="picker" placeholder="Día" [(ngModel)]="selectedDay" (dateChange)="applyFilter()">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field appearance="outline" placeholder="Buscar...">

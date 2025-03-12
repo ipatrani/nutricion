@@ -19,6 +19,8 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { FormsModule } from "@angular/forms";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from '@angular/material/core';
 
 const materialModules = [
   MatButtonModule,
@@ -39,6 +41,8 @@ const materialModules = [
   MatSelectModule,
   MatFormFieldModule,
   MatSlideToggleModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
   CommonModule,
   FormsModule,
 ];
