@@ -1,6 +1,6 @@
 <div class="mat-elevation-z8">
   <app-filters (filterApplied)="onFilterApplied($event)"></app-filters>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
     <ng-container matColumnDef="selected">
       <th mat-header-cell *matHeaderCellDef>
         <mat-checkbox
@@ -11,21 +11,35 @@
       </th>
       <td mat-cell *matCellDef="let element">
         <mat-checkbox [(ngModel)]="element.selected"></mat-checkbox>
+
+        <button mat-icon-button>
+          <mat-icon>edit_note</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          (click)="toggleValidado(element)"
+          [ngClass]="{ validado: element.validado }"
+        >
+          <mat-icon style="color: green">{{
+            element.validado ? "check_circle" : "check_circle_outline"
+          }}</mat-icon>
+        </button>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="ubicacion">
-      <th mat-header-cell *matHeaderCellDef>Ubicación</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ubicación</th>
       <td mat-cell *matCellDef="let element">{{ element.ubicacion }}</td>
     </ng-container>
 
     <ng-container matColumnDef="diagnostico">
-      <th mat-header-cell *matHeaderCellDef>Diagnóstico</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Diagnóstico</th>
       <td mat-cell *matCellDef="let element">{{ element.diagnostico }}</td>
     </ng-container>
 
     <ng-container matColumnDef="nombreYApellido">
-      <th mat-header-cell *matHeaderCellDef>Nombre Apellido</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre Apellido</th>
       <td mat-cell *matCellDef="let element">
         <div>
           <div>{{ element.nombreYApellido.split(" HC: ")[0] }}</div>
@@ -39,19 +53,19 @@
     </ng-container>
 
     <ng-container matColumnDef="alergias">
-      <th mat-header-cell *matHeaderCellDef>Alergias</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Alergias</th>
       <td mat-cell *matCellDef="let element">{{ element.alergias }}</td>
     </ng-container>
 
     <ng-container matColumnDef="dietaIndicada">
-      <th mat-header-cell *matHeaderCellDef>Dieta Indicada</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Dieta Indicada</th>
       <td mat-cell *matCellDef="let element">
         {{ element.dietaIndicada }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="dietaAdecuada">
-      <th mat-header-cell *matHeaderCellDef>Dieta Adecuada</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Dieta Adecuada</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
           <mat-select
@@ -81,7 +95,7 @@
     </ng-container>
 
     <ng-container matColumnDef="liquidos">
-      <th mat-header-cell *matHeaderCellDef>Líquidos</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Líquidos</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
           <mat-select
@@ -97,7 +111,7 @@
     </ng-container>
 
     <ng-container matColumnDef="panificados">
-      <th mat-header-cell *matHeaderCellDef>Panificados</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Panificados</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
           <mat-select
@@ -115,7 +129,7 @@
     </ng-container>
 
     <ng-container matColumnDef="reposteria">
-      <th mat-header-cell *matHeaderCellDef>Repostería</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Repostería</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
           <mat-select
@@ -133,7 +147,7 @@
     </ng-container>
 
     <ng-container matColumnDef="untables">
-      <th mat-header-cell *matHeaderCellDef>Untables</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Untables</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
           <mat-select
@@ -149,7 +163,7 @@
     </ng-container>
 
     <ng-container matColumnDef="liquidosFrios">
-      <th mat-header-cell *matHeaderCellDef>Líquidos Fríos</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Líquidos Fríos</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
           <mat-select
@@ -167,7 +181,7 @@
     </ng-container>
 
     <ng-container matColumnDef="basicos">
-      <th mat-header-cell *matHeaderCellDef>Basicos</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Basicos</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
           <mat-select
@@ -183,7 +197,7 @@
     </ng-container>
 
     <ng-container matColumnDef="extras">
-      <th mat-header-cell *matHeaderCellDef>Extras</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Extras</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
           <mat-select
@@ -200,7 +214,7 @@
     </ng-container>
 
     <ng-container matColumnDef="otrosExtras">
-      <th mat-header-cell *matHeaderCellDef>Otros/Extras</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Otros/Extras</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
           <input matInput placeholder="Otros/Extras" />
@@ -209,52 +223,36 @@
     </ng-container>
 
     <ng-container matColumnDef="gustosSi">
-      <th mat-header-cell *matHeaderCellDef>Gustos SI</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Gustos SI</th>
       <td mat-cell *matCellDef="let element" class="text-green">
         {{ element.gustosSi }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="gustosNo">
-      <th mat-header-cell *matHeaderCellDef>Gustos NO</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Gustos NO</th>
       <td mat-cell *matCellDef="let element" class="text-red">
         {{ element.gustosNo }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="anamnesis">
-      <th mat-header-cell *matHeaderCellDef>Anamnesis</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Anamnesis</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <input matInput placeholder="Anamnesis" [value]="element.anamnesis"/>
+          <input matInput placeholder="Anamnesis" [value]="element.anamnesis" />
         </mat-form-field>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="acciones">
       <th mat-header-cell *matHeaderCellDef>Acciones</th>
-      <td
-        mat-cell
-        *matCellDef="let element"
-        style="display: flex; align-items: center; gap: 3px"
-      >
-        <button mat-icon-button>
-          <mat-icon>edit_note</mat-icon>
-        </button>
+      <td mat-cell *matCellDef="let element">
         <button mat-icon-button>
           <mat-icon>subject</mat-icon>
         </button>
         <button mat-icon-button>
           <mat-icon>person_check</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          (click)="toggleValidado(element)"
-          [ngClass]="{ validado: element.validado }"
-        >
-          <mat-icon style="color: green">{{
-            element.validado ? "check_circle" : "check_circle_outline"
-          }}</mat-icon>
         </button>
       </td>
     </ng-container>
@@ -263,7 +261,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
   <mat-paginator
-    [pageSizeOptions]="[5, 10, 20]"
+    [pageSizeOptions]="[10, 20, 50]"
     showFirstLastButtons
     aria-label="Select page of periodic elements"
     class="paginator-field"

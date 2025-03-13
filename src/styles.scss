@@ -41,7 +41,7 @@
   margin-top: 4px;
   top: 7px;
   display: flex;
-  align-items: center; // This will vertically center the text within the select
+  align-items: center;
 }
 
 .mat-mdc-cell {
@@ -58,12 +58,58 @@
     top: initial !important;
   }
 }
+
+div.mat-mdc-paginator-container {
+  justify-content: flex-start;
+}
+
 .filters-container {
   display: flex;
   gap: 10px;
   align-items: center;
 
-  div.mat-mdc-form-field-icon-suffix{
+  div.mat-mdc-form-field-icon-suffix {
     bottom: 10px !important;
   }
+}
+
+div.mat-sort-header-arrow {
+  opacity: 1 !important;
+}
+
+.mat-column-ubicacion {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.mat-column-nombreYApellido {
+  position: sticky;
+  left: 100px;
+  z-index: 1;
+}
+
+.mat-mdc-paginator-page-size {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+.mat-mdc-paginator-range-actions {
+  position: sticky;
+  left: 200px;
+  z-index: 1;
+}
+
+td.mat-column-selected {
+  display: flex;
+  align-items: center;
+}
+
+td {
+  height: 110px;
+}
+
+td.mat-column-acciones{
+  display: inline-flex;
+  align-content: center;
 }

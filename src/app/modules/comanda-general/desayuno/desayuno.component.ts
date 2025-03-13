@@ -5,6 +5,7 @@ import { map, Observable, startWith } from "rxjs";
 import { Dieta } from "../../../models/dieta";
 import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { MatSort } from "@angular/material/sort";
 
 @Component({
   selector: "app-desayuno",
@@ -150,24 +151,29 @@ export class DesayunoComponent {
     ChangeDetectorRef.prototype
   );
 
+  @ViewChild(MatSort) sort: MatSort = new MatSort();
+
   onFilterApplied(filter: any) {
     console.log("Filtros recibidos:", filter);
     this.dataSource.filterPredicate = (data: any, filter: string) => {
       const parsedFilter = JSON.parse(filter);
       return (
-        (!parsedFilter.sector || data.ubicacion.includes(parsedFilter.sector)) &&
+        (!parsedFilter.sector ||
+          data.ubicacion.includes(parsedFilter.sector)) &&
         (!parsedFilter.day || data.diagnostico.includes(parsedFilter.day)) &&
         (!parsedFilter.searchTerm ||
-          data.nombreYApellido.toLowerCase().includes(parsedFilter.searchTerm.toLowerCase()))
+          data.nombreYApellido
+            .toLowerCase()
+            .includes(parsedFilter.searchTerm.toLowerCase()))
       );
     };
-  
-    // Aplicamos el filtro a la tabla
+
     this.dataSource.filter = JSON.stringify(filter);
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   ngOnInit() {
@@ -175,7 +181,6 @@ export class DesayunoComponent {
       startWith(""),
       map((value) => this._filterDietas(value ?? ""))
     );
-    console.log("Datos iniciales en dataSource:", this.dataSource.data);
   }
 
   private _filterDietas(value: string): any[] {
@@ -187,10 +192,6 @@ export class DesayunoComponent {
 
   onDietaAdecuadaChange(element: any, value: any[]) {
     element.dietaAdecuada = value;
-    console.log(
-      `Dieta adecuada actualizada para ${element.nombreYApellido}:`,
-      value
-    );
   }
 
   toggleValidado(element: TablaDesayuno) {
