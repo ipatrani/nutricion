@@ -27,8 +27,8 @@ export class CenaComponent implements OnInit {
   displayedColumns: string[] = [
     "selected",
     "ubicacion",
-    "diagnostico",
     "nombreYApellido",
+    "diagnostico",
     "alergias",
     "dietaIndicada",
     "dietaAdecuada",

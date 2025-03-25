@@ -1,0 +1,29 @@
+div.button-group {
+  display: flex;
+  gap: 2px;
+  .add-patient-button {
+    color: #4caf50;
+  }
+
+  .custom-button {
+    color: #3c83ed;
+  }
+}
+
+.custom-button,
+span {
+  border: 1px solid #3c83ed;
+  background-color: transparent;
+  text-transform: none;
+}
+
+.add-patient-button {
+  background-color: white;
+  text-transform: none;
+  border: 1px solid #4caf50;
+  span {
+    color: #4caf50;
+    background-color: white;
+    text-transform: none;
+  }
+}

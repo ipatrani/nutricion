@@ -12,8 +12,8 @@ export class AcompananteComponent {
   displayedColumns: string[] = [
     "selected",
     "ubicacion",
-    "diagnostico",
     "nombreYApellido",
+    "diagnostico",
     "alergias",
     "dietaIndicada",
     "dietaAdecuada",

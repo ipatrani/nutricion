@@ -96,8 +96,8 @@ export class AppComponent {
 
   displayedColumns: string[] = [
     "ubicacion",
-    "diagnostico",
     "nombreYApellido",
+    "diagnostico",
     "alergias",
     "dietaIndicada",
     "dietaAdecuada",

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit } from "@angular/core";
+import { Component, EventEmitter, Output, OnInit, Input } from "@angular/core";
 import { DiccionarioUbicacionesService } from "../../services/diccionario.service";
 
 @Component({
@@ -15,6 +15,7 @@ export class FiltersComponent implements OnInit {
   selectedDay: string = "";
   searchTerm: string = "";
   conEntrevista: boolean = false;
+  @Input() isColacion = false;
 
   constructor(private diccionarioService: DiccionarioUbicacionesService) {}
 
