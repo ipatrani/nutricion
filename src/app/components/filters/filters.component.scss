@@ -27,3 +27,10 @@ span {
     text-transform: none;
   }
 }
+
+.custom-button,
+.add-patient-button {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
