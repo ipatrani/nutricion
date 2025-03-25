@@ -1,4 +1,7 @@
 import { Component } from "@angular/core";
+import { MenuTipoService } from "./services/menu-tipo.service";
+import { UtilsService } from "./services/utils.service";
+import { MatTabCategory } from "./models/mat-tab-category.model";
 
 interface Comida {
   ubicacion: string;
@@ -20,13 +23,36 @@ interface Comida {
   anamnesis: string;
   validado?: boolean;
 }
-
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
+  matTabsCategories: MatTabCategory[] = [];
+
+  constructor(
+    private menuTipoService: MenuTipoService,
+    private utilsService: UtilsService
+  ) {
+    this.menuTipoService.getAll().subscribe(
+      (response: any) => {
+        this.matTabsCategories = response.data.map((item: any) => ({
+          description: item.metiDescripcion,
+          comidaTipo: item.metiComidaTipo,
+          metiCodigo: item.metiCodigo,
+        }));
+
+        this.matTabsCategories = this.utilsService.sortCategories(
+          this.matTabsCategories
+        );
+      },
+      (error) => {
+        console.error("Error al obtener datos:", error);
+      }
+    );
+  }
+
   desayunoData: Comida[] = [
     {
       ubicacion: "Mesa 1",

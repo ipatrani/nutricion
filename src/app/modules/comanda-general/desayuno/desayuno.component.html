@@ -42,12 +42,8 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre Apellido</th>
       <td mat-cell *matCellDef="let element">
         <div>
-          <div>{{ element.nombreYApellido.split(" HC: ")[0] }}</div>
-          <div>
-            HC:
-            {{ element.nombreYApellido.split(" HC: ")[1].split(" DNI: ")[0] }} -
-            DNI: {{ element.nombreYApellido.split(" DNI: ")[1] }}
-          </div>
+          <div>{{ element.nombreYApellido }}</div>
+          <div>HC: {{ element.historiaClinica }}</div>
         </div>
       </td>
     </ng-container>
@@ -101,10 +97,14 @@
           <mat-select
             [(ngModel)]="element.liquidos"
             placeholder="Seleccionar..."
+            multiple
           >
-            <mat-option *ngFor="let liquido of liquidos" [value]="liquido">{{
-              liquido
-            }}</mat-option>
+            <mat-option
+              *ngFor="let bebida of element.bebidas"
+              [value]="bebida.id"
+            >
+              {{ bebida.descripcion }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </td>
@@ -117,12 +117,14 @@
           <mat-select
             [(ngModel)]="element.panificados"
             placeholder="Seleccionar..."
+            multiple
           >
             <mat-option
-              *ngFor="let panificado of panificados"
-              [value]="panificado"
-              >{{ panificado }}</mat-option
+              *ngFor="let panificado of element.panificados"
+              [value]="panificado.id"
             >
+              {{ panificado.descripcion }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </td>
@@ -135,12 +137,14 @@
           <mat-select
             [(ngModel)]="element.reposteria"
             placeholder="Seleccionar..."
+            multiple
           >
             <mat-option
-              *ngFor="let repostero of reposteria"
-              [value]="repostero"
-              >{{ repostero }}</mat-option
+              *ngFor="let repostero of element.reposteria"
+              [value]="repostero.id"
             >
+              {{ repostero.descripcion }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </td>
@@ -153,10 +157,13 @@
           <mat-select
             [(ngModel)]="element.untables"
             placeholder="Seleccionar..."
+            multiple
           >
-            <mat-option *ngFor="let untable of untables" [value]="untable">{{
-              untable
-            }}</mat-option>
+            <mat-option
+              *ngFor="let untable of element.untables"
+              [value]="untable.id"
+              >{{ untable.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
@@ -169,11 +176,12 @@
           <mat-select
             [(ngModel)]="element.liquidosFrios"
             placeholder="Seleccionar..."
+            multiple
           >
             <mat-option
-              *ngFor="let liquidoFrio of liquidosFrios"
-              [value]="liquidoFrio"
-              >{{ liquidoFrio }}</mat-option
+              *ngFor="let liquidoFrio of element.liquidosFrios"
+              [value]="liquidoFrio.id"
+              >{{ liquidoFrio.descripcion }}</mat-option
             >
           </mat-select>
         </mat-form-field>
@@ -187,10 +195,13 @@
           <mat-select
             [(ngModel)]="element.basicos"
             placeholder="Seleccionar..."
+            multiple
           >
-            <mat-option *ngFor="let basico of basicos" [value]="basico">{{
-              basico
-            }}</mat-option>
+            <mat-option
+              *ngFor="let basico of element.basicos"
+              [value]="basico.id"
+              >{{ basico.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
@@ -202,12 +213,14 @@
         <mat-form-field appearance="outline">
           <mat-select
             [(ngModel)]="element.extras"
-            multiple
             placeholder="Seleccionar..."
+            multiple
           >
-            <mat-option *ngFor="let extra of extrasList" [value]="extra">{{
-              extra
-            }}</mat-option>
+            <mat-option
+              *ngFor="let extra of element.extras"
+              [value]="extra.id"
+              >{{ extra.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
@@ -216,9 +229,9 @@
     <ng-container matColumnDef="otrosExtras">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Otros/Extras</th>
       <td mat-cell *matCellDef="let element">
-        <mat-form-field appearance="outline">
-          <input matInput placeholder="Otros/Extras" />
-        </mat-form-field>
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="Otros/Extras" [value]="element.otros" />
+      </mat-form-field>
       </td>
     </ng-container>
 
@@ -261,7 +274,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
   <mat-paginator
-    [pageSizeOptions]="[10, 20, 50]"
+    [pageSizeOptions]="[20, 50, 100]"
     showFirstLastButtons
     aria-label="Select page of periodic elements"
     class="paginator-field"

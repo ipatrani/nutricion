@@ -14,6 +14,7 @@ interface TableRow {
 })
 export class GenericTableComponent<T extends TableRow> implements OnInit {
   @Input() tableName: string = '';
+  @Input() comidaTipo: string[] = [];
   @Input() displayedColumns: string[] = [];
   @Input() dataSource: T[] = [];
   @Input() selectable: boolean = false;

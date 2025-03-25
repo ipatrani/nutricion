@@ -1,18 +1,30 @@
-import { ChangeDetectorRef, Component, ViewChild } from "@angular/core";
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { TablaDesayuno } from "../../../models/tabla-desayuno.model";
 import { FormControl } from "@angular/forms";
 import { map, Observable, startWith } from "rxjs";
-import { Dieta } from "../../../models/dieta";
+import { Dieta } from "../../../models/dieta.model";
 import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatSort } from "@angular/material/sort";
+import { TagDietasService } from "../../../services/tag-dietas.service";
+import { ComandaService } from "../../../services/comanda.service";
+import { Administrar } from "../../../models/administrar.model";
+import { Paciente } from "../../../models/paciente.model";
 
 @Component({
   selector: "app-desayuno",
   templateUrl: "./desayuno.component.html",
   styleUrls: ["./desayuno.component.scss"],
 })
-export class DesayunoComponent {
+export class DesayunoComponent implements OnInit {
+  @Input() comidaTipo: string[] = [];
+  @Input() metiCodigo: number = 0;
   displayedColumns: string[] = [
     "selected",
     "ubicacion",
@@ -34,116 +46,24 @@ export class DesayunoComponent {
     "anamnesis",
     "acciones",
   ];
-  dataSource = new MatTableDataSource([
-    {
-      selected: false,
-      ubicacion: "Sala 1",
-      diagnostico: "Diabetes",
-      nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
-      alergias: "Ninguna",
-      dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: [],
-      definir: "Definir 1",
-      gustosSi: "Frutas",
-      gustosNo: "Azúcar",
-      anamnesis: "Paciente con diabetes tipo 2",
-      validado: false,
-      liquidos: "Agua",
-      panificados: "Pan integral",
-      reposteria: "Galletas",
-      untables: "Mantequilla",
-      liquidosFrios: "Leche",
-      basicos: "Frutas",
-      extras: [],
-      otrosExtras: "Sin gluten",
-    },
-    {
-      selected: false,
-      ubicacion: "Sala 1",
-      diagnostico: "Diabetes",
-      nombreYApellido: "Diego Pérez HC: 123 DNI: 12345678",
-      alergias: "Ninguna",
-      dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: [],
-      definir: "Definir 1",
-      gustosSi: "Frutas",
-      gustosNo: "Azúcar",
-      anamnesis: "Paciente con diabetes tipo 2",
-      validado: false,
-      liquidos: "Agua",
-      panificados: "Pan integral",
-      reposteria: "Galletas",
-      untables: "Mantequilla",
-      liquidosFrios: "Leche",
-      basicos: "Frutas",
-      extras: [],
-      otrosExtras: "Sin gluten",
-    },
-    {
-      selected: false,
-      ubicacion: "Sala 2",
-      diagnostico: "Diabetes",
-      nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
-      alergias: "Ninguna",
-      dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: [],
-      definir: "Definir 1",
-      gustosSi: "Frutas",
-      gustosNo: "Azúcar",
-      anamnesis: "Paciente con diabetes tipo 2",
-      validado: false,
-      liquidos: "Agua",
-      panificados: "Pan integral",
-      reposteria: "Galletas",
-      untables: "Mantequilla",
-      liquidosFrios: "Leche",
-      basicos: "Frutas",
-      extras: [],
-      otrosExtras: "Sin gluten",
-    },
-    {
-      selected: false,
-      ubicacion: "Sala 3",
-      diagnostico: "Diabetes",
-      nombreYApellido: "Juan Pérez HC: 123 DNI: 12345678",
-      alergias: "Ninguna",
-      dietaIndicada: "Baja en azúcar",
-      dietaAdecuada: [],
-      definir: "Definir 1",
-      gustosSi: "Frutas",
-      gustosNo: "Azúcar",
-      anamnesis: "Paciente con diabetes tipo 2",
-      validado: false,
-      liquidos: "Agua",
-      panificados: "Pan integral",
-      reposteria: "Galletas",
-      untables: "Mantequilla",
-      liquidosFrios: "Leche",
-      basicos: "Frutas",
-      extras: [],
-      otrosExtras: "Sin gluten",
-    },
-  ]);
-  dietas: Dieta[] = [
-    { id: "1", nombre: "Dieta baja en calorías" },
-    { id: "2", nombre: "Dieta para diabéticos" },
-    { id: "3", nombre: "Dieta vegetariana" },
-  ];
+  dataSource = new MatTableDataSource<TablaDesayuno>([]);
+  dietas: Dieta[] = [];
   dietaFilterCtrl = new FormControl("");
   filteredDietas!: Observable<any[]>;
-  definiciones = [];
-  liquidos = [];
-  panificados = [];
-  reposteria = [];
-  untables = [];
-  basicos = [];
-  otrosExtras = [];
-  liquidosFrios = [];
-  definir = "";
-  extrasList = ["algo1", "algo2", "algo3", "otros"];
-  filteredData = this.dataSource.data;
+  filterCriteria = {
+    sectorpiso: "",
+    sectorLabel: "",
+    day: "",
+    searchTerm: "",
+    areas: "",
+    areaLabel: "",
+    conEntrevista: false,
+  };
 
-  constructor() {}
+  constructor(
+    private tagDietasService: TagDietasService,
+    private comandaService: ComandaService
+  ) {}
 
   @ViewChild(MatPaginator)
   paginator: MatPaginator = new MatPaginator(
@@ -153,40 +73,180 @@ export class DesayunoComponent {
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
 
-  onFilterApplied(filter: any) {
-    console.log("Filtros recibidos:", filter);
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      const parsedFilter = JSON.parse(filter);
-      return (
-        (!parsedFilter.sector ||
-          data.ubicacion.includes(parsedFilter.sector)) &&
-        (!parsedFilter.day || data.diagnostico.includes(parsedFilter.day)) &&
-        (!parsedFilter.searchTerm ||
-          data.nombreYApellido
-            .toLowerCase()
-            .includes(parsedFilter.searchTerm.toLowerCase()))
-      );
-    };
-
-    this.dataSource.filter = JSON.stringify(filter);
-  }
-
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  ngOnInit() {
-    this.filteredDietas = this.dietaFilterCtrl.valueChanges.pipe(
-      startWith(""),
-      map((value) => this._filterDietas(value ?? ""))
-    );
+  async ngOnInit() {
+    this.tagDietasService.getAll().subscribe({
+      next: (response: any) => {
+        this.dietas = response.data.map((item: any) => ({
+          id: item.tagCodigo,
+          nombre: item.tagDescripcion,
+        }));
+
+        this.filteredDietas = this.dietaFilterCtrl.valueChanges.pipe(
+          startWith(""),
+          map((value) => this._filterDietas(value ?? ""))
+        );
+      },
+      error: (error) => {
+        console.error("Error dietas", error);
+      },
+    });
+
+    this.filterCriteria = {
+      sectorpiso: "",
+      sectorLabel: "",
+      day: new Date().toISOString(),
+      searchTerm: "",
+      areas: "",
+      areaLabel: "",
+      conEntrevista: false,
+    };
+    await this.fetchPacientes();
   }
 
-  private _filterDietas(value: string): any[] {
+  onFilterApplied(filter: any) {
+    this.setFilterCriteria(filter);
+    this.dataSource.filterPredicate = this.createFilterPredicate(filter);
+    this.dataSource.filter = JSON.stringify(filter);
+  }
+
+  setFilterCriteria(filter: any) {
+    this.filterCriteria = {
+      sectorpiso: filter.sector?.id || "",
+      sectorLabel: filter.sector?.label || "",
+      day: filter.day ? new Date(filter.day).toISOString() : "",
+      searchTerm: filter.searchTerm || "",
+      areas: filter.area?.id || "",
+      areaLabel: filter.area?.label || "",
+      conEntrevista: filter.conEntrevista || false,
+    };
+  }
+
+  createFilterPredicate(filter: any): (data: any) => boolean {
+    const normalize = (str: string) => str.toLowerCase().replace(/\s+/g, "");
+
+    return (data: any) => {
+      const sectorMatch =
+        !this.filterCriteria.sectorpiso ||
+        normalize(data.ubicacion).includes(
+          normalize(filter.sector.label || "")
+        );
+      const dayMatch =
+        !this.filterCriteria.day ||
+        data.diagnostico.includes(this.filterCriteria.day);
+      const searchTermMatch =
+        !this.filterCriteria.searchTerm ||
+        data.nombreYApellido
+          .toLowerCase()
+          .includes(this.filterCriteria.searchTerm.toLowerCase());
+      const areaMatch =
+        !this.filterCriteria.areas ||
+        data.areas
+          ?.toLowerCase()
+          .includes(this.filterCriteria.areas.toLowerCase());
+
+      return sectorMatch && dayMatch && searchTermMatch && areaMatch;
+    };
+  }
+
+  _filterDietas(value: string): any[] {
     const filterValue = value.toLowerCase();
     return this.dietas.filter((dieta) =>
       dieta.nombre.toLowerCase().includes(filterValue)
+    );
+  }
+
+  getSelectedValuesFromDataSource() {
+    return this.dataSource.data.map((element) => ({
+      dietaAdecuada: element.dietaAdecuada,
+      liquidos: element.liquidos,
+      panificados: element.panificados,
+      reposteria: element.reposteria,
+      untables: element.untables,
+      liquidosFrios: element.liquidosFrios,
+      basicos: element.basicos,
+      extras: element.extras,
+    }));
+  }
+
+  fetchPacientes() {
+    const body: Administrar = {
+      ubicCodigo: 1, // valor fijo para Hospital Austral
+      salaCodigo: Number(this.filterCriteria.sectorpiso),
+      areaCodigo: Number(this.filterCriteria.areas),
+      ubipCodigo: 0, // innutilizable por el momento
+      fecha: this.filterCriteria.day,
+      search: this.filterCriteria.searchTerm,
+      metiCodigo: this.metiCodigo,
+      misPacientes: false, // innutilizable por el momento
+      conEntrevista: this.filterCriteria.conEntrevista,
+      tagCodigo: [1, 2, 3],
+    };
+
+    this.comandaService.createAdministrar(body).subscribe(
+      (response: any) => {
+        if (response.status && response.data) {
+          this.dataSource.data = response.data.map((paciente: any) => {
+            const tipoComidas = paciente.tipoComidas || [];
+            return {
+              nombreYApellido: `${paciente.persApellido} ${paciente.persNombre}`,
+              historiaClinica:
+                paciente.paciHistoriaClinica ?? "Sin historia clínica",
+              ubicacion: paciente.inteUbicacion,
+              diagnostico: paciente.inteMotivoIngreso,
+              dietaIndicada: paciente.dietaIndicada
+                ? paciente.dietaIndicada
+                    .map((dieta: any) => dieta.tagDescripcion)
+                    .join(", ")
+                : "Sin dieta indicada",
+              dietaAdecuada: paciente.dietasAdecuadas || [],
+              bebidas: this.getComidasByTipo(tipoComidas, "Bebida"),
+              panificados: this.getComidasByTipo(tipoComidas, "Panificados"),
+              reposteria: this.getComidasByTipo(tipoComidas, "Repostería"),
+              untables: this.getComidasByTipo(tipoComidas, "Untables"),
+              liquidosFrios: this.getComidasByTipo(
+                tipoComidas,
+                "Líquidos fríos"
+              ),
+              basicos: this.getComidasByTipo(tipoComidas, "Básicos"),
+              extras: this.getComidasByTipo(tipoComidas, "Extras"),
+              gustosSi:
+                paciente.gustosSi
+                  ?.map((gusto: any) => gusto.descripcion)
+                  .join(", ") || "Sin gustos",
+              gustosNo:
+                paciente.gustosNo
+                  ?.map((gusto: any) => gusto.descripcion)
+                  .join(", ") || "Sin gustos",
+              otros: paciente.otros ?? "Sin otros",
+              selected: false,
+            };
+          });
+        } else {
+          console.error("Error in response data:", response.message);
+          this.dataSource.data = [];
+        }
+      },
+      (error) => {
+        console.error("Error fetching pacientes:", error);
+        this.dataSource.data = [];
+      }
+    );
+  }
+
+  getComidasByTipo(tipoComidas: any[], tipo: string) {
+    const tipoComida = tipoComidas.find(
+      (item: any) => item.cotiDescripcion.trim() === tipo.trim()
+    );
+    return (
+      tipoComida?.comidas?.map((comida: any) => ({
+        id: comida.comiCodigo,
+        descripcion: comida.comiDescripcion,
+      })) || []
     );
   }
 

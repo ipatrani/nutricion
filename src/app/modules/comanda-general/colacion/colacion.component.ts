@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, ViewChild, Input } from "@angular/core";
 import { TablaDesayuno } from "../../../models/tabla-desayuno.model";
 import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
@@ -10,6 +10,8 @@ import { TablaAlmuerzo } from "../../../models/tabla-almuerzo.model";
   styleUrls: ["./colacion.component.scss"],
 })
 export class ColacionComponent {
+  @Input() comidaTipo: string[] = [];
+  @Input() metiCodigo: number = 0;
   displayedColumns: string[] = [
     "selected",
     "ubicacion",

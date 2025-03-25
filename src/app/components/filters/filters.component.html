@@ -1,21 +1,57 @@
 <div class="filters-container">
   <mat-form-field appearance="outline">
-    <mat-select [(ngModel)]="selectedSector" placeholder="Sector" (selectionChange)="applyFilter()">
-      <mat-option [value]="">Todos</mat-option>
-      <mat-option *ngFor="let sector of sectors" [value]="sector">{{ sector }}</mat-option>
+    <mat-select
+      [(ngModel)]="selectedSector"
+      placeholder="Sector/Piso"
+      (selectionChange)="applyFilter()"
+    >
+      <mat-option [value]="null">Todos</mat-option>
+      <mat-option *ngFor="let sector of sectors" [value]="sector">
+        {{ sector.label }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <input matInput [matDatepicker]="picker" placeholder="Día" [(ngModel)]="selectedDay" (dateChange)="applyFilter()">
+    <mat-select
+      [(ngModel)]="selectedArea"
+      placeholder="Área"
+      (selectionChange)="applyFilter()"
+    >
+      <mat-option [value]="null">Todas</mat-option>
+      <mat-option *ngFor="let area of areas" [value]="area">
+        {{ area.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <input
+      matInput
+      [matDatepicker]="picker"
+      placeholder="Día"
+      [(ngModel)]="selectedDay"
+      (dateChange)="applyFilter()"
+    />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field appearance="outline" placeholder="Buscar...">
-    <input placeholder="Buscador" matInput [(ngModel)]="searchTerm" (keyup)="applyFilter()" />
+    <input
+      placeholder="Buscador"
+      matInput
+      [(ngModel)]="searchTerm"
+      (keyup)="applyFilter()"
+    />
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 
-  <mat-slide-toggle labelPosition="before">Pac. SIN entrevista inicial</mat-slide-toggle>
+  <mat-slide-toggle
+    labelPosition="before"
+    [(ngModel)]="conEntrevista"
+    (change)="applyFilter()"
+  >
+    Pac. SIN entrevista inicial
+  </mat-slide-toggle>
 </div>

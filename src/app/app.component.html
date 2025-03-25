@@ -1,34 +1,16 @@
 <h1>Plantilla de distribución</h1>
 <mat-tab-group>
-  <mat-tab label="Desayuno">
-    <app-desayuno></app-desayuno>
-  </mat-tab>
-  <mat-tab label="Almuerzo">
-    <app-almuerzo></app-almuerzo>
-  </mat-tab>
-  <mat-tab label="Merienda">
-    <app-merienda></app-merienda>
-  </mat-tab>
-  <mat-tab label="Cena">
-    <app-cena></app-cena>
-  </mat-tab>
-  <mat-tab label="Colación">
-    <app-colacion></app-colacion>
-  </mat-tab>
-  <mat-tab label="D.Acompañante">
-    <app-acompanante></app-acompanante>
-  </mat-tab>
-  <!-- <mat-tab label="GENERIC">
-    <app-generic-table
-      tableName="Desayuno"
-      [dataSource]="desayunoData"
-      [displayedColumns]="displayedColumns"
-      [selectable]="true"
-      [selectColumns]="selectColumns"
-      [selectOptions]="selectOptions"
-    >
-    </app-generic-table>
-  </mat-tab> -->
+    <mat-tab *ngFor="let category of matTabsCategories" [label]="category.description">
+    <ng-container [ngSwitch]="category.description">
+      <app-desayuno *ngSwitchCase="'Desayuno'" [metiCodigo]="category.metiCodigo" [comidaTipo]="category.comidaTipo"></app-desayuno>
+      <app-almuerzo *ngSwitchCase="'Almuerzo'" [metiCodigo]="category.metiCodigo" [comidaTipo]="category.comidaTipo"></app-almuerzo>
+      <app-merienda *ngSwitchCase="'Merienda'" [metiCodigo]="category.metiCodigo" [comidaTipo]="category.comidaTipo"></app-merienda>
+      <app-cena *ngSwitchCase="'Cena'" [metiCodigo]="category.metiCodigo" [comidaTipo]="category.comidaTipo"></app-cena>
+      <app-colacion *ngSwitchCase="'Colación 10:30hs'" [metiCodigo]="category.metiCodigo" [comidaTipo]="category.comidaTipo"></app-colacion>
+      <app-colacion *ngSwitchCase="'Colación 18:30hs'" [metiCodigo]="category.metiCodigo" [comidaTipo]="category.comidaTipo"></app-colacion>
+      <app-colacion *ngSwitchCase="'Colación 23hs'" [metiCodigo]="category.metiCodigo" [comidaTipo]="category.comidaTipo"></app-colacion>
+    </ng-container>
+    </mat-tab>
 </mat-tab-group>
 
 <router-outlet></router-outlet>

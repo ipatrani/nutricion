@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output, OnInit } from "@angular/core";
+import { DiccionarioUbicacionesService } from "../../services/diccionario.service";
 
 @Component({
   selector: "app-filters",
@@ -7,21 +8,58 @@ import { Component, EventEmitter, Output, OnInit } from "@angular/core";
 })
 export class FiltersComponent implements OnInit {
   @Output() filterApplied = new EventEmitter<any>();
-  sectors: string[] = ["Sala 1", "Sala 2", "Sala 3"];
-  days: string[] = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
-  selectedSector: string = "";
+  sectors: { id: string; label: string }[] = [];
+  areas: { id: string; label: string }[] = [];
+  selectedSector: { id: string; label: string } | null = null;
+  selectedArea: { id: string; label: string } | null = null;
   selectedDay: string = "";
   searchTerm: string = "";
+  conEntrevista: boolean = false;
 
-  ngOnInit() {}
+  constructor(private diccionarioService: DiccionarioUbicacionesService) {}
+
+  ngOnInit() {
+    this.diccionarioService.getSalas("1").subscribe({
+      next: (response: any) => {
+        this.sectors = response.data.map((item: any) => ({
+          id: item.id,
+          label: item.descripcion || "",
+        }));
+        const ids = response.data.map((item: any) => item.id);
+
+        ids.forEach((id: string) => {
+          this.diccionarioService.getAreas(id).subscribe({
+            next: (areaResponse: any) => {
+              this.areas = areaResponse.data.map((item: any) => ({
+                id: item.id,
+                label: item.descripcion || "",
+              }));
+            },
+            error: (error) => {
+              console.error(error);
+            },
+          });
+        });
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
 
   applyFilter() {
     const filteredData = {
-      sector: this.selectedSector || "",
+      sector: this.selectedSector
+        ? { id: this.selectedSector.id, label: this.selectedSector.label }
+        : null,
+      area: this.selectedArea
+        ? { id: this.selectedArea.id, label: this.selectedArea.label }
+        : null,
       day: this.selectedDay || "",
       searchTerm: this.searchTerm || "",
+      conEntrevista: this.conEntrevista || false,
     };
-    console.log(filteredData)
+    console.log(filteredData);
     this.filterApplied.emit(filteredData);
   }
 }

@@ -1,211 +1,320 @@
 <div class="mat-elevation-z8">
-  <app-filters></app-filters>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <ng-container matColumnDef="selected">
-    <th mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="toggleSelectAll($event.checked)" [checked]="isAllSelected()"
-        [indeterminate]="isIndeterminate()"></mat-checkbox>
-    </th>
-    <td mat-cell *matCellDef="let element">
-      <mat-checkbox [(ngModel)]="element.selected"></mat-checkbox>
-    </td>
-  </ng-container>
-  
+  <app-filters (filterApplied)="onFilterApplied($event)"></app-filters>
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <ng-container matColumnDef="selected">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          (change)="toggleSelectAll($event.checked)"
+          [checked]="isAllSelected()"
+          [indeterminate]="isIndeterminate()"
+        ></mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-checkbox [(ngModel)]="element.selected"></mat-checkbox>
+
+        <button mat-icon-button>
+          <mat-icon>edit_note</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          (click)="toggleValidado(element)"
+          [ngClass]="{ validado: element.validado }"
+        >
+          <mat-icon style="color: green">{{
+            element.validado ? "check_circle" : "check_circle_outline"
+          }}</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="ubicacion">
-      <th mat-header-cell *matHeaderCellDef> Ubicación </th>
-      <td mat-cell *matCellDef="let element"> {{element.ubicacion}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ubicación</th>
+      <td mat-cell *matCellDef="let element">{{ element.ubicacion }}</td>
     </ng-container>
-  
+
     <ng-container matColumnDef="diagnostico">
-      <th mat-header-cell *matHeaderCellDef> Diagnóstico </th>
-      <td mat-cell *matCellDef="let element"> {{element.diagnostico}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Diagnóstico</th>
+      <td mat-cell *matCellDef="let element">{{ element.diagnostico }}</td>
     </ng-container>
-  
+
     <ng-container matColumnDef="nombreYApellido">
-      <th mat-header-cell *matHeaderCellDef> Nombre Apellido </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre Apellido</th>
       <td mat-cell *matCellDef="let element">
         <div>
-          <div>{{element.nombreYApellido.split(' HC: ')[0]}}</div>
-          <div>HC: {{element.nombreYApellido.split(' HC: ')[1].split(' DNI: ')[0]}} - DNI: {{element.nombreYApellido.split(' DNI: ')[1]}}</div>
+          <div>{{ element.nombreYApellido }}</div>
+          <div>{{ element.historiaClinica }}</div>
         </div>
       </td>
     </ng-container>
-    
+
     <ng-container matColumnDef="alergias">
-      <th mat-header-cell *matHeaderCellDef> Alergias </th>
-      <td mat-cell *matCellDef="let element"> {{element.alergias}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Alergias</th>
+      <td mat-cell *matCellDef="let element">{{ element.alergias }}</td>
     </ng-container>
-  
+
     <ng-container matColumnDef="dietaIndicada">
-      <th mat-header-cell *matHeaderCellDef> Dieta Indicada </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Dieta Indicada</th>
       <td mat-cell *matCellDef="let element">
-        {{element.dietaIndicada}}
+        {{ element.dietaIndicada }}
       </td>
     </ng-container>
-  
+
     <ng-container matColumnDef="dietaAdecuada">
-      <th mat-header-cell *matHeaderCellDef> Dieta Adecuada </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Dieta Adecuada</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <mat-select [(ngModel)]="element.dietaAdecuada" placeholder="Seleccionar...">
-            <mat-option *ngFor="let dieta of dietas" [value]="dieta">{{dieta}}</mat-option>
+          <mat-select
+            [(ngModel)]="element.dietaAdecuada"
+            placeholder="Seleccionar..."
+            multiple
+            multiple
+            (selectionChange)="onDietaAdecuadaChange(element, $event.value)"
+          >
+            <mat-option>
+              <ngx-mat-select-search
+                [formControl]="dietaFilterCtrl"
+                [placeholderLabel]="'Buscar...'"
+                [noEntriesFoundLabel]="'No se encontraron resultados'"
+              >
+              </ngx-mat-select-search>
+            </mat-option>
+
+            <mat-option
+              *ngFor="let dieta of filteredDietas | async"
+              [value]="dieta.id"
+            >
+              {{ dieta.nombre }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </td>
     </ng-container>
-  
+
     <ng-container matColumnDef="entrada">
-      <th mat-header-cell *matHeaderCellDef> Entrada </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Entrada</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <mat-select [(ngModel)]="element.entrada" placeholder="Seleccionar...">
-            <mat-option *ngFor="let entrada of entradas" [value]="entrada">{{entrada}}</mat-option>
+          <mat-select
+            [(ngModel)]="element.entrada"
+            placeholder="Seleccionar..."
+            multiple
+          >
+            <mat-option
+              *ngFor="let entrada of element.entradas"
+              [value]="entrada.id"
+              >{{ entrada.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="platoPrincipal">
-      <th mat-header-cell *matHeaderCellDef> Plato Principal </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Plato Principal</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <mat-select [(ngModel)]="element.platoPrincipal" placeholder="Seleccionar...">
-            <mat-option *ngFor="let plato of platosPrincipales" [value]="plato">{{plato}}</mat-option>
+          <mat-select
+            [(ngModel)]="element.platoPrincipal"
+            placeholder="Seleccionar..."
+            multiple
+          >
+            <mat-option
+              *ngFor="let plato of element.platosPrincipales"
+              [value]="plato.id"
+              >{{ plato.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="guarnicion">
-      <th mat-header-cell *matHeaderCellDef> Guarnición </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Guarnición</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <mat-select [(ngModel)]="element.guarnicion" placeholder="Seleccionar...">
-            <mat-option *ngFor="let guarnicion of guarniciones" [value]="guarnicion">{{guarnicion}}</mat-option>
+          <mat-select
+            [(ngModel)]="element.guarnicion"
+            placeholder="Seleccionar..."
+            multiple
+          >
+            <mat-option
+              *ngFor="let guarnicion of element.guarniciones"
+              [value]="guarnicion.id"
+              >{{ guarnicion.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="postre">
-      <th mat-header-cell *matHeaderCellDef> Postre </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Postre</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <mat-select [(ngModel)]="element.postre" placeholder="Seleccionar...">
-            <mat-option *ngFor="let postre of postres" [value]="postre">{{postre}}</mat-option>
+          <mat-select
+            [(ngModel)]="element.postre"
+            placeholder="Seleccionar..."
+            multiple
+          >
+            <mat-option
+              *ngFor="let postre of element.postres"
+              [value]="postre.id"
+              >{{ postre.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="bebida">
-      <th mat-header-cell *matHeaderCellDef> Bebida </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bebida</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <mat-select [(ngModel)]="element.bebida" placeholder="Seleccionar...">
-            <mat-option *ngFor="let bebida of bebidas" [value]="bebida">{{bebida}}</mat-option>
+          <mat-select
+            [(ngModel)]="element.bebida"
+            placeholder="Seleccionar..."
+            multiple
+          >
+            <mat-option
+              *ngFor="let bebida of element.bebidas"
+              [value]="bebida.id"
+              >{{ bebida.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="panificados">
-      <th mat-header-cell *matHeaderCellDef> Panificados </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Panificados</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <mat-select [(ngModel)]="element.panificados" placeholder="Seleccionar...">
-            <mat-option *ngFor="let panificado of panificados" [value]="panificado">{{panificado}}</mat-option>
+          <mat-select
+            [(ngModel)]="element.panificados"
+            placeholder="Seleccionar..."
+            multiple
+          >
+            <mat-option
+              *ngFor="let panificado of element.panificados"
+              [value]="panificado.id"
+              >{{ panificado.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="condimentos">
-      <th mat-header-cell *matHeaderCellDef> Condimentos </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Condimentos</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <mat-select [(ngModel)]="element.condimentos" placeholder="Seleccionar...">
-            <mat-option *ngFor="let condimento of condimentos" [value]="condimento">{{condimento}}</mat-option>
+          <mat-select
+            [(ngModel)]="element.condimentos"
+            placeholder="Seleccionar..."
+            multiple
+          >
+            <mat-option
+              *ngFor="let condimento of element.condimentos"
+              [value]="condimento.id"
+              >{{ condimento.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="basicos">
-      <th mat-header-cell *matHeaderCellDef> Basicos </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Basicos</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <mat-select [(ngModel)]="element.basicos" placeholder="Seleccionar...">
-            <mat-option *ngFor="let basico of basicos" [value]="basico">{{basico}}</mat-option>
+          <mat-select
+            [(ngModel)]="element.basicos"
+            placeholder="Seleccionar..."
+            multiple
+          >
+            <mat-option
+              *ngFor="let basico of element.basicos"
+              [value]="basico.id"
+              >{{ basico.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="extras">
-      <th mat-header-cell *matHeaderCellDef> Extras </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Extras</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <mat-select [(ngModel)]="element.extras" multiple placeholder="Seleccionar...">
-            <mat-option *ngFor="let extra of extrasList" [value]="extra">{{extra}}</mat-option>
+          <mat-select
+            [(ngModel)]="element.extras"
+            multiple
+            placeholder="Seleccionar..."
+            multiple
+          >
+            <mat-option
+              *ngFor="let extra of element.extrasList"
+              [value]="extra.id"
+              >{{ extra.descripcion }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </td>
     </ng-container>
-    
+
     <ng-container matColumnDef="otrosExtras">
-      <th mat-header-cell *matHeaderCellDef> Otros/Extras </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Otros/Extras</th>
+      <td mat-cell *matCellDef="let element">
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="Otros/Extras" [value]="element.otros" />
+      </mat-form-field>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="gustosSi">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Gustos Sí</th>
+      <td mat-cell *matCellDef="let element" class="text-green">
+        {{ element.gustosSi }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="gustosNo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Gustos No</th>
+      <td mat-cell *matCellDef="let element" class="text-red">
+        {{ element.gustosNo }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="anamnesis">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Anamnesis</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field appearance="outline">
-          <input matInput placeholder="Otros/Extras">
+          <input matInput placeholder="Anamnesis" [value]="element.anamnesis" />
         </mat-form-field>
       </td>
     </ng-container>
-  
-    <ng-container matColumnDef="gustosSi">
-      <th mat-header-cell *matHeaderCellDef> Gustos Sí </th>
-      <td mat-cell *matCellDef="let element" class="text-green"> {{element.gustosSi}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="gustosNo">
-      <th mat-header-cell *matHeaderCellDef> Gustos No </th>
-      <td mat-cell *matCellDef="let element" class="text-red"> {{element.gustosNo}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="anamnesis">
-      <th mat-header-cell *matHeaderCellDef> Anamnesis </th>
-      <td mat-cell *matCellDef="let element">
-        <mat-form-field appearance="outline">
-          <input matInput placeholder="Anamnesis">
-        </mat-form-field> 
-      </td>
-    </ng-container>
-  
+
     <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let element" style="display: flex; align-items: center; gap: 3px;">
-        <button mat-icon-button>
-          <mat-icon>edit_note</mat-icon>
-        </button>
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let element">
         <button mat-icon-button>
           <mat-icon>subject</mat-icon>
         </button>
         <button mat-icon-button>
           <mat-icon>person_check</mat-icon>
         </button>
-        <button mat-icon-button (click)="toggleValidado(element)" [ngClass]="{'validado': element.validado}">
-          <mat-icon style="color: green;">{{ element.validado ? 'check_circle' : 'check_circle_outline' }}</mat-icon>
-        </button>
       </td>
     </ng-container>
-  
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
   <mat-paginator
-[pageSizeOptions]="[5, 10, 20]"
-showFirstLastButtons
-aria-label="Select page of periodic elements"
->
-</mat-paginator>
+    [pageSizeOptions]="[20, 50, 100]"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+    class="paginator-field"
+  >
+  </mat-paginator>
 </div>
