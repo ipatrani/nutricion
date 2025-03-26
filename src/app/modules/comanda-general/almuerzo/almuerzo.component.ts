@@ -199,7 +199,11 @@ export class AlmuerzoComponent implements OnInit {
               guarniciones: this.getComidasByTipo(tipoComidas, "Guarnición"),
               postres: this.getComidasByTipo(tipoComidas, "Postre"),
               bebidas: this.getComidasByTipo(tipoComidas, "Bebida"),
-              panificados: this.getComidasByTipo(tipoComidas, "Panificados"),
+              panificados: [],
+              panificadosOptions: this.getComidasByTipo(
+                tipoComidas,
+                "Panificados"
+              ),
               especiales: this.getComidasByTipo(tipoComidas, "Especiales"),
               condimentos: this.getComidasByTipo(tipoComidas, "Condimentos"),
               basicos: this.getComidasByTipo(tipoComidas, "Básicos"),

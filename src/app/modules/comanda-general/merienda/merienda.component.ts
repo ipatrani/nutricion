@@ -108,16 +108,27 @@ export class MeriendaComponent implements OnInit {
   }
 
   onFilterApplied(filter: any) {
-    this.filterCriteria.sectorpiso = filter.sector?.id || "";
-    this.filterCriteria.day = filter.day
-      ? new Date(filter.day).toISOString()
-      : "";
-    this.filterCriteria.searchTerm = filter.searchTerm || "";
-    this.filterCriteria.areas = filter.area?.id || "";
-    this.filterCriteria.conEntrevista = filter.conEntrevista || false;
+    this.setFilterCriteria(filter);
+    this.dataSource.filterPredicate = this.createFilterPredicate(filter);
+    this.dataSource.filter = JSON.stringify(filter);
+  }
 
-    this.dataSource.filterPredicate = (data: any) => {
-      const normalize = (str: string) => str.toLowerCase().replace(/\s+/g, "");
+  setFilterCriteria(filter: any) {
+    this.filterCriteria = {
+      sectorpiso: filter.sector?.id || "",
+      sectorLabel: filter.sector?.label || "",
+      day: filter.day ? new Date(filter.day).toISOString() : "",
+      searchTerm: filter.searchTerm || "",
+      areas: filter.area?.id || "",
+      areaLabel: filter.area?.label || "",
+      conEntrevista: filter.conEntrevista || false,
+    };
+  }
+
+  createFilterPredicate(filter: any): (data: any) => boolean {
+    const normalize = (str: string) => str.toLowerCase().replace(/\s+/g, "");
+
+    return (data: any) => {
       const sectorMatch =
         !this.filterCriteria.sectorpiso ||
         normalize(data.ubicacion).includes(
@@ -139,11 +150,9 @@ export class MeriendaComponent implements OnInit {
 
       return sectorMatch && dayMatch && searchTermMatch && areaMatch;
     };
-
-    this.dataSource.filter = JSON.stringify(filter);
   }
 
-  private _filterDietas(value: string): any[] {
+  _filterDietas(value: string): any[] {
     const filterValue = value.toLowerCase();
     return this.dietas.filter((dieta) =>
       dieta.nombre.toLowerCase().includes(filterValue)
@@ -174,18 +183,21 @@ export class MeriendaComponent implements OnInit {
       metiCodigo: this.metiCodigo,
       misPacientes: false, // innutilizable por el momento
       conEntrevista: this.filterCriteria.conEntrevista,
-      tagCodigo: [1, 2, 3],
+      tagCodigo: [0],
     };
 
     this.comandaService.createAdministrar(body).subscribe(
       (response: any) => {
         if (response.status && response.data) {
+          console.log(response.data);
+
           this.dataSource.data = response.data.map((paciente: any) => {
             const tipoComidas = paciente.tipoComidas || [];
             return {
               nombreYApellido: `${paciente.persApellido} ${paciente.persNombre}`,
               historiaClinica:
                 paciente.paciHistoriaClinica ?? "Sin historia clínica",
+              dni: paciente.persNroDocumento,
               ubicacion: paciente.inteUbicacion,
               diagnostico: paciente.inteMotivoIngreso,
               dietaIndicada: paciente.dietaIndicada
@@ -195,10 +207,20 @@ export class MeriendaComponent implements OnInit {
                 : "Sin dieta indicada",
               dietaAdecuada: paciente.dietasAdecuadas || [],
               bebidas: this.getComidasByTipo(tipoComidas, "Bebida"),
-              panificados: this.getComidasByTipo(tipoComidas, "Panificados"),
-              reposteria: this.getComidasByTipo(tipoComidas, "Repostería"),
-              untables: this.getComidasByTipo(tipoComidas, "Untables"),
-              liquidosFrios: this.getComidasByTipo(
+              panificados: [],
+              panificadosOptions: this.getComidasByTipo(
+                tipoComidas,
+                "Panificados"
+              ),
+              reposteria: [],
+              reposteriaOptions: this.getComidasByTipo(
+                tipoComidas,
+                "Repostería"
+              ),
+              untables: [],
+              untablesOptions: this.getComidasByTipo(tipoComidas, "Untables"),
+              liquidosFrios: [],
+              liquidosFriosOptions: this.getComidasByTipo(
                 tipoComidas,
                 "Líquidos fríos"
               ),
@@ -213,6 +235,7 @@ export class MeriendaComponent implements OnInit {
                   ?.map((gusto: any) => gusto.descripcion)
                   .join(", ") || "Sin gustos",
               otros: paciente.otros ?? "Sin otros",
+              anamnesis: paciente.anemesis ?? "Sin anamnesis",
               selected: false,
             };
           });
@@ -232,12 +255,14 @@ export class MeriendaComponent implements OnInit {
     const tipoComida = tipoComidas.find(
       (item: any) => item.cotiDescripcion.trim() === tipo.trim()
     );
-    return (
-      tipoComida?.comidas?.map((comida: any) => ({
-        id: comida.comiCodigo,
-        descripcion: comida.comiDescripcion,
-      })) || []
-    );
+    if (!tipoComida || !tipoComida.comidas) {
+      return [];
+    }
+
+    return tipoComida.comidas.map((comida: any) => ({
+      id: comida.comiCodigo,
+      descripcion: comida.comiDescripcion,
+    }));
   }
 
   onDietaAdecuadaChange(element: any, value: any[]) {

@@ -43,7 +43,7 @@
       <td mat-cell *matCellDef="let element">
         <div>
           <div>{{ element.nombreYApellido }}</div>
-          <div>HC: {{ element.historiaClinica }}</div>
+          <div>HC: {{ element.historiaClinica }} | DNI: {{ element.dni }}</div>
         </div>
       </td>
     </ng-container>
@@ -120,7 +120,7 @@
             multiple
           >
             <mat-option
-              *ngFor="let panificado of element.panificados"
+              *ngFor="let panificado of element.panificadosOptions"
               [value]="panificado.id"
             >
               {{ panificado.descripcion }}
@@ -140,7 +140,7 @@
             multiple
           >
             <mat-option
-              *ngFor="let repostero of element.reposteria"
+              *ngFor="let repostero of element.reposteriaOptions"
               [value]="repostero.id"
             >
               {{ repostero.descripcion }}
@@ -160,10 +160,11 @@
             multiple
           >
             <mat-option
-              *ngFor="let untable of element.untables"
+              *ngFor="let untable of element.untablesOptions"
               [value]="untable.id"
-              >{{ untable.descripcion }}</mat-option
             >
+              {{ untable.descripcion }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </td>
@@ -179,10 +180,11 @@
             multiple
           >
             <mat-option
-              *ngFor="let liquidoFrio of element.liquidosFrios"
+              *ngFor="let liquidoFrio of element.liquidosFriosOptions"
               [value]="liquidoFrio.id"
-              >{{ liquidoFrio.descripcion }}</mat-option
             >
+              {{ liquidoFrio.descripcion }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </td>
@@ -229,9 +231,9 @@
     <ng-container matColumnDef="otrosExtras">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Otros/Extras</th>
       <td mat-cell *matCellDef="let element">
-      <mat-form-field appearance="outline">
-        <input matInput placeholder="Otros/Extras" [value]="element.otros" />
-      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <input matInput placeholder="Otros/Extras" [value]="element.otros" />
+        </mat-form-field>
       </td>
     </ng-container>
 
