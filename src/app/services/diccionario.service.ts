@@ -6,7 +6,7 @@ import { environment } from "../../environments/environment";
   providedIn: "root",
 })
 export class DiccionarioUbicacionesService {
-  private apiUrl = `${environment.apiUrl}/sistema/Diccionario`;
+  private apiUrl = `${environment.apiUrl}sistema/Diccionario`;
 
   constructor(private http: HttpClient) {}
 

@@ -183,6 +183,7 @@ export class CenaComponent implements OnInit {
               nombreYApellido: `${paciente.persApellido} ${paciente.persNombre}`,
               historiaClinica:
                 paciente.paciHistoriaClinica ?? "Sin historia clínica",
+              dni: paciente.persNroDocumento,
               ubicacion: paciente.inteUbicacion,
               diagnostico: paciente.inteMotivoIngreso,
               dietaIndicada: paciente.dietaIndicada
@@ -213,6 +214,7 @@ export class CenaComponent implements OnInit {
                   ?.map((gusto: any) => gusto.descripcion)
                   .join(", ") || "Sin gustos",
               otros: paciente.otros ?? "Sin otros",
+              anamnesis: paciente.anemesis ?? "Sin anamnesis",
               selected: false,
             };
           });
