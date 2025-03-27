@@ -41,7 +41,6 @@ export class CenaComponent implements OnInit {
     "condimentos",
     "basicos",
     "extras",
-    "otrosExtras",
     "gustosSi",
     "gustosNo",
     "anamnesis",
@@ -50,7 +49,7 @@ export class CenaComponent implements OnInit {
   dietas: Dieta[] = [];
   dietaFilterCtrl = new FormControl("");
   filteredDietas!: Observable<any[]>;
-  dataSource = new MatTableDataSource<TablaAlmuerzo>([]);
+  dataSource = new MatTableDataSource<any>([]);
   filterCriteria = {
     sectorpiso: "",
     sectorLabel: "",
@@ -180,6 +179,7 @@ export class CenaComponent implements OnInit {
           this.dataSource.data = response.data.map((paciente: any) => {
             const tipoComidas = paciente.tipoComidas || [];
             return {
+              paciCodigo: paciente.paciCodigo,
               nombreYApellido: `${paciente.persApellido} ${paciente.persNombre}`,
               historiaClinica:
                 paciente.paciHistoriaClinica ?? "Sin historia clínica",
@@ -195,12 +195,16 @@ export class CenaComponent implements OnInit {
               entradas: this.getComidasByTipo(tipoComidas, "Entrada"),
               platosPrincipales: this.getComidasByTipo(
                 tipoComidas,
-                "Plato Principal"
+                "Plato principal"
               ),
               guarniciones: this.getComidasByTipo(tipoComidas, "Guarnición"),
               postres: this.getComidasByTipo(tipoComidas, "Postre"),
               bebidas: this.getComidasByTipo(tipoComidas, "Bebida"),
-              panificados: this.getComidasByTipo(tipoComidas, "Panificados"),
+              panificados: [],
+              panificadosOptions: this.getComidasByTipo(
+                tipoComidas,
+                "Panificados"
+              ),
               especiales: this.getComidasByTipo(tipoComidas, "Especiales"),
               condimentos: this.getComidasByTipo(tipoComidas, "Condimentos"),
               basicos: this.getComidasByTipo(tipoComidas, "Básicos"),
@@ -244,6 +248,65 @@ export class CenaComponent implements OnInit {
 
   onDietaAdecuadaChange(element: any, value: any[]) {
     element.dietaAdecuada = value;
+
+    const body = {
+      ubicCodigo: 1,
+      salaCodigo: 0,
+      areaCodigo: 0,
+      ubipCodigo: 0,
+      fecha: new Date().toISOString(),
+      search: "",
+      metiCodigo: this.metiCodigo,
+      misPacientes: false,
+      conEntrevista: false,
+      tagCodigo: value,
+      paciCodigo: element.paciCodigo,
+    };
+
+    this.comandaService.createAdministrar(body).subscribe(
+      (response: any) => {
+        if (response.status && response.data) {
+          const index = this.dataSource.data.findIndex(
+            (item) => item.paciCodigo === element.paciCodigo
+          );
+          if (index !== -1) {
+            const updatedPaciente = response.data[0];
+            const tipoComidas = updatedPaciente.tipoComidas || [];
+            this.dataSource.data[index] = {
+              ...this.dataSource.data[index],
+              dietaAdecuada: updatedPaciente.dietasAdecuadas || [],
+              entradas: this.getComidasByTipo(tipoComidas, "Entrada"),
+              platosPrincipales: this.getComidasByTipo(
+                tipoComidas,
+                "Plato principal"
+              ),
+              guarniciones: this.getComidasByTipo(tipoComidas, "Guarnición"),
+              postres: this.getComidasByTipo(tipoComidas, "Postre"),
+              bebidas: this.getComidasByTipo(tipoComidas, "Bebida"),
+              panificados: this.getComidasByTipo(tipoComidas, "Panificados"),
+              especiales: this.getComidasByTipo(tipoComidas, "Especiales"),
+              condimentos: this.getComidasByTipo(tipoComidas, "Condimentos"),
+              basicos: this.getComidasByTipo(tipoComidas, "Básicos"),
+              extrasList: this.getComidasByTipo(tipoComidas, "Extras"),
+              gustosSi:
+                updatedPaciente.gustosSi
+                  ?.map((gusto: any) => gusto.descripcion)
+                  .join(", ") || "Sin gustos",
+              gustosNo:
+                updatedPaciente.gustosNo
+                  ?.map((gusto: any) => gusto.descripcion)
+                  .join(", ") || "Sin gustos",
+              otros: updatedPaciente.otros ?? "Sin otros",
+              anamnesis: updatedPaciente.anemesis ?? "Sin anamnesis",
+            };
+            this.dataSource.data = [...this.dataSource.data];
+          }
+        }
+      },
+      (error) => {
+        console.error("Error updating dieta:", error);
+      }
+    );
   }
 
   toggleValidado(element: TablaAlmuerzo) {

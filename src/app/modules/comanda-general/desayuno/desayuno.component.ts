@@ -39,13 +39,12 @@ export class DesayunoComponent implements OnInit {
     "liquidosFrios",
     "basicos",
     "extras",
-    "otrosExtras",
     "gustosSi",
     "gustosNo",
     "anamnesis",
     "acciones",
   ];
-  dataSource = new MatTableDataSource<TablaDesayuno>([]);
+  dataSource = new MatTableDataSource<any>([]);
   dietas: Dieta[] = [];
   dietaFilterCtrl = new FormControl("");
   filteredDietas!: Observable<any[]>;
@@ -189,11 +188,10 @@ export class DesayunoComponent implements OnInit {
     this.comandaService.createAdministrar(body).subscribe(
       (response: any) => {
         if (response.status && response.data) {
-          console.log(response.data);
-
           this.dataSource.data = response.data.map((paciente: any) => {
             const tipoComidas = paciente.tipoComidas || [];
             return {
+              paciCodigo: paciente.paciCodigo,
               nombreYApellido: `${paciente.persApellido} ${paciente.persNombre}`,
               historiaClinica:
                 paciente.paciHistoriaClinica ?? "Sin historia clínica",
@@ -267,6 +265,68 @@ export class DesayunoComponent implements OnInit {
 
   onDietaAdecuadaChange(element: any, value: any[]) {
     element.dietaAdecuada = value;
+
+    const body = {
+      ubicCodigo: 1,
+      salaCodigo: 0,
+      areaCodigo: 0,
+      ubipCodigo: 0,
+      fecha: new Date().toISOString(),
+      search: "",
+      metiCodigo: this.metiCodigo,
+      misPacientes: false,
+      conEntrevista: false,
+      tagCodigo: value,
+      paciCodigo: element.paciCodigo,
+    };
+
+    this.comandaService.createAdministrar(body).subscribe(
+      (response: any) => {
+        if (response.status && response.data) {
+          const index = this.dataSource.data.findIndex(
+            (item) => item.paciCodigo === element.paciCodigo
+          );
+          if (index !== -1) {
+            const updatedPaciente = response.data[0];
+            const tipoComidas = updatedPaciente.tipoComidas || [];
+            this.dataSource.data[index] = {
+              ...this.dataSource.data[index],
+              dietaAdecuada: updatedPaciente.dietasAdecuadas || [],
+              bebidas: this.getComidasByTipo(tipoComidas, "Bebida"),
+              panificadosOptions: this.getComidasByTipo(
+                tipoComidas,
+                "Panificados"
+              ),
+              reposteriaOptions: this.getComidasByTipo(
+                tipoComidas,
+                "Repostería"
+              ),
+              untablesOptions: this.getComidasByTipo(tipoComidas, "Untables"),
+              liquidosFriosOptions: this.getComidasByTipo(
+                tipoComidas,
+                "Líquidos fríos"
+              ),
+              basicos: this.getComidasByTipo(tipoComidas, "Básicos"),
+              extras: this.getComidasByTipo(tipoComidas, "Extras"),
+              gustosSi:
+                updatedPaciente.gustosSi
+                  ?.map((gusto: any) => gusto.descripcion)
+                  .join(", ") || "Sin gustos",
+              gustosNo:
+                updatedPaciente.gustosNo
+                  ?.map((gusto: any) => gusto.descripcion)
+                  .join(", ") || "Sin gustos",
+              otros: updatedPaciente.otros ?? "Sin otros",
+              anamnesis: updatedPaciente.anemesis ?? "Sin anamnesis",
+            };
+            this.dataSource.data = [...this.dataSource.data];
+          }
+        }
+      },
+      (error) => {
+        console.error("Error updating dieta:", error);
+      }
+    );
   }
 
   toggleValidado(element: TablaDesayuno) {

@@ -180,15 +180,6 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="otrosExtras">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Otros/Extras</th>
-      <td mat-cell *matCellDef="let element">
-      <mat-form-field appearance="outline">
-        <input matInput placeholder="Otros/Extras" [value]="element.otros" />
-      </mat-form-field>
-      </td>
-    </ng-container>
-
     <ng-container matColumnDef="gustosSi">
       <th mat-header-cell *matHeaderCellDef>Gustos Sí</th>
       <td mat-cell *matCellDef="let element" class="text-green">

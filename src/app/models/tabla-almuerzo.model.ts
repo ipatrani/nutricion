@@ -12,7 +12,6 @@ export interface TablaAlmuerzo {
     bebida: string;
     panificados: string;
     condimentos: string;
-    otrosExtras: string;
     gustosSi: string;
     gustosNo: string;
     anamnesis: string;

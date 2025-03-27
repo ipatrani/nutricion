@@ -18,6 +18,5 @@ export interface TablaDesayuno {
     liquidosFrios: string;
     basicos: string;
     extras: string;
-    otrosExtras: string;
   }
   
